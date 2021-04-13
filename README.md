@@ -40,5 +40,14 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
 
 **patch**
 
+* 기본적으로 funcname이 요청본문에 들어가야 한다.
+
+* initializeProblems
+  * problems 숫자 배열이 요청본문에 들어가야 한다.
+  * 기존에 있던 inactive group set을 초기화, 입력으로 들어온 problems를 넣어준다.
+  * 이후 수정은 updateProblems로 할 예정 > 아직 구현 안됨  * 이후 수정은 updateProblems로 할 예정 > 아직 구현 안됨
+
+요구사항 있으면 바꿀 예정
+
 > 차후 수정예정
 
