@@ -41,11 +41,24 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
 **patch**
 
 * 기본적으로 funcname이 요청본문에 들어가야 한다.
+*later 엔드포인트/함수명 이런방식으로 작동되게 바꿀 예정
 
-* initializeProblems
+* initializeProblems(userId, problems, callback)
   * problems 숫자 배열이 요청본문에 들어가야 한다.
-  * 기존에 있던 inactive group set을 초기화, 입력으로 들어온 problems를 넣어준다.
-  * 이후 수정은 updateProblems로 할 예정 > 아직 구현 안됨  * 이후 수정은 updateProblems로 할 예정 > 아직 구현 안됨
+  * 기존에 있던 inactive group set을 초기화, 입력으로 들어온 problems를 initialization그룹에 넣어준다.
+  * userid와 problems 필요
+
+* updateProblems(userId, problems, callback)
+  * 유저의 문제들을 업데이트 해주는 함수. problems에 들어간 문제는 solved: true를 표시해준다.
+  * userid와 problems가 필요
+
+* updateMessage(userId, message, callback)
+  * 유저의 상태메시지를 업데이트 해주는 함수.
+  * userid와 message가 반드시 필요
+
+* updateOrganization(userId, organization, callback)
+  * 유저의 조직정보를 업데이트 해주는 함수.
+  * userid와 organization 반드시 필요
 
 요구사항 있으면 바꿀 예정
 
