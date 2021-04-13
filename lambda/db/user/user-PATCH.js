@@ -33,11 +33,13 @@ let failResponse = {
 };
 
 exports.handler = (event, context, callback) => {
-    let userId = event ? event.userid : "default";
-    let funcName = event ? event.funcname : "default";
-    let problems = event ? event.problems : "default";
-    let groupName = event ? event.groupname : "defualt";
-    let groupRequest = event ? event.grouprequest : "default";
+    let userId = event.userid ? event.userid : "default";
+    let funcName = event.funcname ? event.funcname : "default";
+    let problems = event.problems ? event.problems : "default";
+    let groupName = event.groupname ? event.groupname : "defualt";
+    let groupRequest = event.grouprequest ? event.grouprequest : "default";
+    let message = event.message ? event.message : "default";
+    let organization = event.organization ? event.organization : "";
      
     if (funcName == "default" || funcName == "") {
         failResponse.body = JSON.stringify({"message":"missing content"});
@@ -56,6 +58,14 @@ exports.handler = (event, context, callback) => {
             
         case 'addProblems':
             addProblems(userId, groupName, problems, callback);
+            break;
+
+        case 'updateMessage':
+            updateMessage(userId, message, callback);
+            break;
+            
+        case 'updateOrganization':
+            updateOrganization(userId, organization, callback);
             break;
             
         default:
@@ -238,3 +248,63 @@ function addProblems(userId, groupName, problems, callback) {
         }
     });
 }
+
+
+//user_message 수정 함수
+function updateMessage(userId, message, callback) {
+    const params = {
+        TableName: 'ACTIVE_USER',
+        Key: {
+            user_id: userId
+        },
+        AttributeUpdates: {
+            "user_message": {
+                Action: "PUT",
+                Value: message
+            }
+        }
+    };
+    
+    dynamo.update(params, function(err, data) {
+        if (err) {
+            console.log("message Error", err);
+            failResponse.body = JSON.stringify({"message": `changing message has an error: ${err}`});
+            callback(null, failResponse);
+            
+        } else {
+            console.log("message Success", data);
+            response.body = JSON.stringify({"message": "user_message is changed"});
+            callback(null, response);
+        }
+    });
+}
+
+//organization 수정 함수
+function updateOrganization(userId, organization, callback) {
+    const params = {
+        TableName: 'ACTIVE_USER',
+        Key: {
+            user_id: userId
+        },
+        AttributeUpdates: {
+            "organization": {
+                Action: "PUT",
+                Value: organization
+            }
+        }
+    };
+    
+    dynamo.update(params, function(err, data) {
+        if (err) {
+            console.log("organization Error", err);
+            failResponse.body = JSON.stringify({"message": `changing organization has an error: ${err}`});
+            callback(null, failResponse);
+            
+        } else {
+            console.log("organization Success", data);
+            response.body = JSON.stringify({"message": "organization is changed"});
+            callback(null, response);
+        }
+    });
+}
+
