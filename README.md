@@ -64,3 +64,26 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
 
 > 차후 수정예정
 
+## groupDB REST API 사용법
+
+**endpoint**
+
+https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
+
+**get**
+
+* 기본적으로 'id&getGroup' 두가지의 값 혹은 'getAllGroup'을 쿼리에 같이 줘야한다.
+
+* getUser
+
+* Grou
+  Gggg> ex) https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/rest-resource?userid=testid&funcname=getUser
+
+* getAllUsers
+
+
+**post**
+
+* 요청 본문에 userid, userpw, useremail, bojname이 들어가야 한다.
+
+
