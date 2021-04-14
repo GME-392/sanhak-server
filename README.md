@@ -75,13 +75,13 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 * 기본적으로 'id&getGroup' 두가지의 값 혹은 'getAllGroup'을 쿼리에 같이 줘야한다.
 
 * getUser
-  * id(groupID)를 입력하여 GroupDB의 테이블에 속해 있는 내용을 모두 불러온다.
+  * id(groupID)를 입력하여 GroupDB의 테이블에 속해 있는 데이터를 모두 불러온다.
 
 * getAllUsers
-DB의 
+  * DB의 모든 데이터들을 한번에 불러온다
 
 **post**
 
-* 요청 본문에 userid, userpw, useremail, bojname이 들어가야 한다.
+* 요청 본문에 groupid, leader(그룹명), name(그룹이름), member(그룹멤버) 등의 데이터를 입력하면 DB의 테이블이 생성된다.
 
 
