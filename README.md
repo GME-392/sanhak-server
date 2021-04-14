@@ -84,4 +84,9 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 
 * 요청 본문에 groupid, leader(그룹명), name(그룹이름), member(그룹멤버) 등의 데이터를 입력하면 DB에 테이블이 생성된다.
 
+**delete**
 
+* 요청 본문에 grro
+
+
+oup
