@@ -75,12 +75,10 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 * 기본적으로 'id&getGroup' 두가지의 값 혹은 'getAllGroup'을 쿼리에 같이 줘야한다.
 
 * getUser
-
-* Grou
-  Gggg> ex) https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/rest-resource?userid=testid&funcname=getUser
+  * id(groupID)를 입력하여 GroupDB의 테이블에 속해 있는 내용을 모두 불러온다.
 
 * getAllUsers
-
+DB의 
 
 **post**
 
