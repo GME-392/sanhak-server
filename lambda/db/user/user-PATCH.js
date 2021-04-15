@@ -40,6 +40,7 @@ exports.handler = (event, context, callback) => {
     let groupRequest = event.grouprequest ? event.grouprequest : "default";
     let message = event.message ? event.message : "default";
     let organization = event.organization ? event.organization : "";
+    let homepage = event.homepage ? event.homepage : "";
      
     if (funcName == "default" || funcName == "") {
         failResponse.body = JSON.stringify({"message":"missing content"});
@@ -59,13 +60,21 @@ exports.handler = (event, context, callback) => {
         case 'addProblems':
             addProblems(userId, groupName, problems, callback);
             break;
-
+            
         case 'updateMessage':
             updateMessage(userId, message, callback);
             break;
             
         case 'updateOrganization':
             updateOrganization(userId, organization, callback);
+            break;
+            
+        case 'updateSolved':
+            updateSolved(userId, problems, callback);
+            break;
+            
+        case 'updateHomepage':
+            updateHomepage(userId, homepage, callback);
             break;
             
         default:
@@ -150,7 +159,6 @@ function updateProblems(userId, problems, callback) {
                     }
                 }
             }
-            
             
             params = {
                 TableName: 'ACTIVE_USER',
@@ -249,7 +257,6 @@ function addProblems(userId, groupName, problems, callback) {
     });
 }
 
-
 //user_message 수정 함수
 function updateMessage(userId, message, callback) {
     const params = {
@@ -308,3 +315,66 @@ function updateOrganization(userId, organization, callback) {
     });
 }
 
+//문제가 겹치지 않게 할 필요가 있다.
+//임시 땜빵해야할 
+function updateSolved(userId, problems, callback) {
+    let v = [];
+    for(let i of problems) {
+        v[problems[i]] = i;
+    }
+    
+    const params = {
+        TableName: 'ACTIVE_USER',
+        Key: {
+            user_id: userId
+        },
+        AttributeUpdates: {
+            "solved_problems": {
+                Action: "ADD",
+                Value: problems
+            }
+        },
+    };
+    
+    dynamo.update(params, function(err, data) {
+        if (err) {
+            console.log("updateSolved Error", err);
+            failResponse.body = JSON.stringify({"message": `updateSolved has an error: ${err}`});
+            callback(null, failResponse);
+            
+        } else {
+            console.log("updateSolved Success", data);
+            response.body = JSON.stringify({"message": "updateSolved is changed"});
+            callback(null, response);
+        }
+    });
+}
+
+//homepage update
+function updateHomepage(userId, homepage, callback) {
+    const params = {
+        TableName: 'ACTIVE_USER',
+        Key: {
+            user_id: userId
+        },
+        AttributeUpdates: {
+            "organization": {
+                Action: "PUT",
+                Value: homepage
+            }
+        }
+    };
+    
+    dynamo.update(params, function(err, data) {
+        if (err) {
+            console.log("updateHomepage Error", err);
+            failResponse.body = JSON.stringify({"message": `changing homepage has an error: ${err}`});
+            callback(null, failResponse);
+            
+        } else {
+            console.log("updateHomepage Success", data);
+            response.body = JSON.stringify({"message": "homepage is changed"});
+            callback(null, response);
+        }
+    });
+}

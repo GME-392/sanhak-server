@@ -56,6 +56,10 @@ exports.handler = (event, context, callback) => {
             "active_group_set": {"default": group_set},
             "inactive_group_set": {"default": group_set},
             "created_at": `${new Date()}`,
+            "user_message": "",
+            "organization": "",
+            "solved_problems": [],
+            "homepage": "",
         }
     };
     
