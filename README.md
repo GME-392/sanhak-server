@@ -50,6 +50,7 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
 * 나중에 엔드포인트/함수명 이런방식으로 작동되게 바꿀 예정
 
 > body에 들어갈 내용 예시
+
 ![image](https://user-images.githubusercontent.com/26537075/114869024-806ac880-9e31-11eb-9b73-8d9158e69985.png)
 
 
