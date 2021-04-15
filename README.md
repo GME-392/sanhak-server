@@ -19,6 +19,9 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
 * getAllUsers
   * 모든 user의 데이터를 가져온다
   * userid에 쓰레기 값이라도 넣어야 한다.
+
+* getSolved
+  * userid에 해당하는 유저의 푼 문제를 모두 반환한다.
  
 
 **POST**
