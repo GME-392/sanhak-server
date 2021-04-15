@@ -72,6 +72,10 @@ exports.handler = (event, context, callback) => {
             getAllUsers(callback);
             break;
             
+        case 'getSolved':
+            getSolved(userId, callback);
+            break;
+            
         default:
             console.log("default_function");
             failResponse.body = JSON.stringify({"message": "thers is no appropriate function name"});
@@ -105,6 +109,10 @@ function getUser(userId, callback) {
                 "user_rank": `${data.Item.user_rank}`,
                 "created_at": `${data.Item.created_at}`,
                 "user_status": `${data.Item.user_status}`,
+                "user_message": `${data.Item.user_message}`,
+                "organization": `${data.Item.organization}`,
+                "solved_problems": `${data.Item.solved_problems}`,
+                "homepage": `${data.Item.homepage}`,
             };
             response.body = JSON.stringify(responseBody);
             callback(null, response);
@@ -141,6 +149,11 @@ function isLogginable(userId, password, callback) {
 
 //유저의 문제만 가져오기
 function getUserProblems(userId) {
+    
+}
+
+//푼 문제들 가져오기
+function getSolved() {
     
 }
 
