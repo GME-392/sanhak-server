@@ -42,23 +42,15 @@ exports.handler = (event, context, callback) => {
     let organization = event.organization ? event.organization : "";
     let homepage = event.homepage ? event.homepage : "";
      
-    if (funcName == "default" || funcName == "") {
+    if (userId == "default" || userId == "" || funcName == "default" || funcName == "") {
         failResponse.body = JSON.stringify({"message":"missing content"});
         callback(null, failResponse);
         return;
     }
     
     switch (funcName) {
-        case 'initializeProblems':
-            initializeProblems(userId, problems, callback);
-            break;
-        
         case 'updateProblems':
             updateProblems(userId, problems, callback);
-            break;
-            
-        case 'addProblems':
-            addProblems(userId, groupName, problems, callback);
             break;
             
         case 'updateMessage':
@@ -84,54 +76,11 @@ exports.handler = (event, context, callback) => {
     }
 };
 
-//Action에는 ADD, PUT, DELETE 3가지가 있다.
-//크롤러에서 유저 문제 셋 초기화
-function initializeProblems(userId, problems, callback) {
-    let group_set = {};
-    group_set["group_auth"] = false;
-    group_set["rank"] = -1;
-    
-    for(let i of problems) {
-        group_set[i] = {
-            "due_date": "default",
-            "solved": true,
-            "s_date": "default"
-        };
-    }
-    
-    const params = {
-        TableName: 'ACTIVE_USER',
-        Key: {
-            user_id: userId
-        },
-        AttributeUpdates: {
-            "inactive_group_set": {
-                Action: "PUT",
-                Value: {"initialization": group_set},
-            }
-        }
-    };
-    
-    dynamo.update(params, function(err, data) {
-        if (err) {
-            console.log("initializeProblem Error", err);
-            failResponse.body = JSON.stringify({"message": `initializeProblem has error: ${err}`});
-            callback(null, failResponse);
-            
-        } else {
-            console.log("initializeProblem Success", data, group_set);
-            response.body = JSON.stringify({"message": "problem is initialized"});
-            callback(null, response);
-        }
-    });
-}
-
 //문제를 추가? 문제를 수정? 문제 삭제?
 //일단은 여기서 get을 하고 문제를 업데이트해서 다시 집어넣는다.
 //차후에는 get함수로 따로 옮기고 람다호출로 받아오도록 하자.
 //active group에 있는 그룹을 찾아 문제 업데이트
 function updateProblems(userId, problems, callback) {
-    
     let params = {
         Key: {
             user_id: userId,
@@ -148,7 +97,7 @@ function updateProblems(userId, problems, callback) {
             callback(null, failResponse);
         } else {
             console.log("getUser Success", data);
-            myData = data.Item.inactive_group_set;
+            myData = data.Item.active_group_set;
             response.body = JSON.stringify(myData);
             for(let i in myData) {
                 console.log("myData !!!!! ", myData[`${i}`]);
@@ -166,7 +115,7 @@ function updateProblems(userId, problems, callback) {
                     user_id: userId,
                 },
                 AttributeUpdates: {
-                      "inactive_group_set": {
+                      "active_group_set": {
                           Action: "PUT",
                           Value: myData,
                       }
@@ -183,76 +132,68 @@ function updateProblems(userId, problems, callback) {
                     console.log("updateProblem Success", data);
                     response.body = JSON.stringify({"message": "problem is updated", "..":`${myData}`});
                     callback(null, response);
+                    //group에서 문제 업데이트 후 해결한 문제에 항목 추가
+                    addProblems(userId, problems, callback);
                 }
             });
             
         }
     });
-    
-    
-    params = {
-        TableName: 'ACTIVE_USER',
+}
+
+function addProblems(userId, problems, callback) {
+    let params = {
         Key: {
             user_id: userId,
         },
-        AttributeUpdates: {
-              "inactive_group_set": {
-                  Action: "PUT",
-                  Value: myData,
-              }
-        },
-    };
-    
-    dynamo.update(params, function(err, data) {
-        if (err) {
-            console.log("updateProblem Error", err);
-            failResponse.body = JSON.stringify({"message": `updateProblem has error: ${err}`});
-            callback(null, failResponse);
-            
-        } else {
-            console.log("updateProblem Success", data);
-            response.body = JSON.stringify({"message": "problem is updated", "..":`${myData}`});
-            callback(null, response);
-        }
-    });
-}
-
-function addProblems(userId, groupName, problems, callback) {
-    let group_set = {};
-    group_set["group_auth"] = false;
-    group_set["rank"] = -1;
-    
-    for(let i of problems) {
-        group_set[i] = {
-            "due_date": "default",
-            "solved": true,
-            "s_date": "default"
-        };
-    }
-    
-    const params = {
         TableName: 'ACTIVE_USER',
-        Key: {
-            user_id: userId
-        },
-        AttributeUpdates: {
-            "inactive_group_set": {
-                Action: "ADD",
-                Value: {"initialization": group_set},
-            }
-        }
     };
-    
-    dynamo.update(params, function(err, data) {
+    let myData = {};
+    //update에 파라미터를 줘서 하려고 했지만 실패했기 때문에
+    //임시 방편으로 구현한 것. 차후에 수정해야함.
+    dynamo.get(params, function(err, data) {
         if (err) {
-            console.log("initializeProblem Error", err);
-            failResponse.body = JSON.stringify({"message": `initializeProblem has error: ${err}`});
+            console.log("getUser Error", err);
+            failResponse.body = JSON.stringify({"message": `getting userid: ${userId} is failed`});
             callback(null, failResponse);
-            
         } else {
-            console.log("initializeProblem Success", data, group_set);
-            response.body = JSON.stringify({"message": "problem is initialized"});
-            callback(null, response);
+            console.log("getUser Success", data);
+            myData = data.Item.solved_problems;
+            response.body = JSON.stringify(myData);
+            
+            //파라미터 수정이 가능하면 해야함 - 업데이트 필요
+            for(let i of problems) {
+                if (myData.indexOf(i) == -1) {
+                    myData.push(i);
+                }
+            }
+            
+            params = {
+                TableName: 'ACTIVE_USER',
+                Key: {
+                    user_id: userId,
+                },
+                AttributeUpdates: {
+                      "solved_problems": {
+                          Action: "PUT",
+                          Value: myData,
+                      }
+                },
+            };
+            
+            dynamo.update(params, function(err, data) {
+                if (err) {
+                    console.log("addProblem Error", err);
+                    failResponse.body = JSON.stringify({"message": `addProblem has error: ${err}`});
+                    callback(null, failResponse);
+                    
+                } else {
+                    console.log("addProblem Success", data);
+                    response.body = JSON.stringify({"message": "problem is added", "..":`${myData}`});
+                    callback(null, response);
+                }
+            });
+            
         }
     });
 }
