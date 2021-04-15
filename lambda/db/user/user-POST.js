@@ -12,10 +12,11 @@ AWS.config.update({
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = (event, context, callback) => {
-    let userId = event ? event.userid : "default";
-    let userPw = event ? event.userpw : "default";
-    let bojName = event ? event.bojname : "default";
-    let userEmail = event ? event.useremail : "default";
+    let userId = event.userid ? event.userid : "default";
+    let userPw = event.userpw ? event.userpw : "default";
+    let bojName = event.bojname ? event.bojname : "default";
+    let userEmail = event.useremail ? event.useremail : "default";
+    let organization = event.organization ? event.organization : "";
     
     if (userId == "default" || userPw == "default" || bojName == "default" || userEmail == "default"
     || userId =="" || userPw == "" || bojName == "" || userEmail == "") {
@@ -57,7 +58,7 @@ exports.handler = (event, context, callback) => {
             "inactive_group_set": {"default": group_set},
             "created_at": `${new Date()}`,
             "user_message": "",
-            "organization": "",
+            "organization": organization,
             "solved_problems": [],
             "homepage": "",
         }
