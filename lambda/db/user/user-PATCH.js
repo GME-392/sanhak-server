@@ -299,7 +299,7 @@ function updateHomepage(userId, homepage, callback) {
             user_id: userId
         },
         AttributeUpdates: {
-            "organization": {
+            "homepage": {
                 Action: "PUT",
                 Value: homepage
             }
