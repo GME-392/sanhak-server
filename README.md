@@ -6,6 +6,7 @@
 **endpoint**
 https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/rest-resource
 
+
 **GET**
 
 * 기본적으로 userid와 funcname 두가지의 값을 쿼리 문자열에 같이 줘야한다.
@@ -21,8 +22,9 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
   * userid에 쓰레기 값이라도 넣어야 한다.
 
 * getSolved
-  * userid에 해당하는 유저의 푼 문제를 모두 반환한다.
+  * userid의 solved_problems를 반환한다.
  
+
 
 **POST**
 
@@ -33,6 +35,7 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
 * 값이 비어있거나 빈 문자열이면 오류 메시지를 반환한다.
 
 
+
 **DELETE**
 
 * 요청 본문에 userid, userpw가 들어가야한다.
@@ -40,7 +43,9 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
 * 해당id가 없거나 비밀번호가 틀리면 오류 메시지를 반환한다.
 
 
+
 **PUT**
+
 
 
 **PATCH**
@@ -55,10 +60,14 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
 ![image](https://user-images.githubusercontent.com/26537075/114869317-cb84db80-9e31-11eb-865e-57c178356213.png)
 
 
+* addProblems
+  * solved_problems에 문제들을 추가해주는 함수.
+  * 입력받는 problems는 항상 내부의 데이터셋과 중복되지 않음이 보장되야한다.
+  * userid, problems 반드시 필요
+
 * updateProblems
-  * 유저의 문제들을 업데이트 해주는 함수. problems에 들어간 문제는 active group에서 solved: true를 표시해준다.
-  * 그룹의 업데이트 이후 solved_problems에 항목 추가
-  * userid와 problems가 필요
+  * 유저의 문제들을 업데이트 해주는 함수. active group에서 solved: true를 표시해준다.
+  * userid가 필요
 
 * updateMessage
   * 유저의 상태메시지를 업데이트 해주는 함수.
@@ -73,7 +82,9 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
   * userid와 homepage 반드시 필요
 
 
+
 > 차후 수정예정
+
 
 
 
