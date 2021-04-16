@@ -153,8 +153,26 @@ function getUserProblems(userId) {
 }
 
 //푼 문제들 가져오기
-function getSolved() {
-    
+function getSolved(userId, callback) {
+    console.log("getSolved in function");
+    let params = {
+        Key: {
+            user_id: userId,
+        },
+        TableName: 'ACTIVE_USER',
+    };
+    dynamo.get(params, function(err, data) {
+        if (err) {
+            console.log("getSolved Error", err);
+            failResponse.body = JSON.stringify({"message": `when getting solved_problems an error has occured, error: ${err}`});
+            callback(null, failResponse);
+            
+        } else {
+            console.log("getSolved Success", data);
+            response.body = JSON.stringify(data.Item.solved_problems);
+            callback(null, response);
+        }
+    });
 }
 
 //모든 유저데이터를 가져오기
