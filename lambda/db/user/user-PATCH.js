@@ -313,8 +313,7 @@ function addProblems(userId, problems, callback) {
 
 //그룹을 추가해주는 함수
 function addGroup(userId, groupName, groupAuth, callback) {
-    //이전에 그룹에 가입 했었는지 확인할 필요가 있다. inactive group set확인,
-    //일단은 그룹이 추가되는지 확인
+    //inactive group set에 저장되어 있으면 복원, 아니면 새로 만듬
     let group = {};
     group["group_auth"] = groupAuth;
     group["rank"] = -1;
@@ -324,7 +323,7 @@ function addGroup(userId, groupName, groupAuth, callback) {
         Key: {
             user_id: userId,
         },
-        UpdateExpression: 'set active_group_set.#k1 = if_not_exists( active_group_set.#k1, :v1)',
+        UpdateExpression: 'set active_group_set.#k1 = if_not_exists( inactive_group_set.#k1 , if_not_exists( active_group_set.#k1, :v1) ) remove inactive_group_set.#k1',
         ExpressionAttributeNames: {"#k1": groupName},
         ExpressionAttributeValues: {":v1": group}
     };
