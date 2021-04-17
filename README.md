@@ -93,6 +93,30 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
 
 
 
+## groupDB 구조
+
+**전체 구조**
+
+* 전체 구조
+
+<img width="870" alt="DB" src="https://user-images.githubusercontent.com/64597426/115109106-d7e27300-9fae-11eb-97b9-282029667e28.png">
+
+
+**member**
+
+![member](https://user-images.githubusercontent.com/64597426/115109127-f34d7e00-9fae-11eb-91e6-925f415041b6.jpg)
+
+
+**group_attendance**
+
+![group_attendance](https://user-images.githubusercontent.com/64597426/115109148-0c562f00-9faf-11eb-80a3-752823066809.jpg)
+
+
+**group_goal**
+
+![group_goal](https://user-images.githubusercontent.com/64597426/115109301-f7c66680-9faf-11eb-929a-8bdd0a35978f.jpg)
+
+
 
 ## groupDB REST API 사용법
 
@@ -121,26 +145,6 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 * 요청 본문에 id(그룹id) 입력 시 DB에서 해당 테이블 삭제
 
 
-**DB 구조**
-
-* 전체 구조
-
-<img width="870" alt="DB" src="https://user-images.githubusercontent.com/64597426/115109106-d7e27300-9fae-11eb-97b9-282029667e28.png">
-
-
-* member
-
-![member](https://user-images.githubusercontent.com/64597426/115109127-f34d7e00-9fae-11eb-91e6-925f415041b6.jpg)
-
-
-* group_attendance
-
-![group_attendance](https://user-images.githubusercontent.com/64597426/115109148-0c562f00-9faf-11eb-80a3-752823066809.jpg)
-
-
-* group_goal
-
-![group_goal](https://user-images.githubusercontent.com/64597426/115109301-f7c66680-9faf-11eb-929a-8bdd0a35978f.jpg)
 
 
 
