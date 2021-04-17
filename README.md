@@ -4,7 +4,7 @@
 
 ## userDB REST API 사용법
 **endpoint**
-https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/rest-resource
+https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/rest-resourceCancel changes
 
 
 **GET**
@@ -96,13 +96,15 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 
 **get**
 
-* 기본적으로 'id&getGroup' 두가지의 값 혹은 'getAllGroup'을 쿼리에 같이 줘야한다.
+* 기본적으로 'id('id=')&getGroup' 두가지의 값 혹은 'getAllGroup'을 쿼리에 같이 줘야한다.
 
 * getUser
-  * id(groupID)를 입력하여 GroupDB의 테이블에 속해 있는 데이터를 모두 불러온다.
+  * id(groupID)를 입력하여 GroupDB(func)의 테이블에 속해 있는 데이터를 모두 불러온다.
+  * 'id=(group_id 입력)&func=getGroup'을 쿼리문자열에 입력한다.
 
 * getAllUsers
   * DB의 모든 데이터들을 한번에 불러온다
+  * 'func=getAllGroup'을 쿼리문자열에 입력한다.
 
 **post**
 
