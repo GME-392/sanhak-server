@@ -335,7 +335,43 @@ function addGroup(userId, groupName, groupAuth, callback) {
     });
 }
 
-//그룹에 문제를 추가해주는 함수
+//그룹에 문제를 추가해주는 함수 문제들은 기본적으로 solved: false 상태
 function addGroupProblems(userId, groupName, problems, callback) {
+    const p_form = {
+        "due_date": "default",
+        "solved": false,
+        "s_date": "default"
+    };
     
+    let updateExpression='set';
+    let expressionAttributeNames={"#k1": groupName};
+
+    for (const property of problems) {
+        updateExpression += ` active_group_set.#k1.#p${property} = if_not_exists( active_group_set.#k1.#p${property}, :v1) ,`;
+        expressionAttributeNames['#p'+property] = property ;
+    }
+    updateExpression = updateExpression.slice(0, -1);
+    
+    const params = {
+        TableName: 'ACTIVE_USER',
+        Key: {
+            user_id: userId,
+        },
+        UpdateExpression: updateExpression,
+        ExpressionAttributeNames: expressionAttributeNames,
+        ExpressionAttributeValues: {":v1": p_form}
+    };
+    
+    dynamo.update(params, function(err, data) {
+        if (err) {
+            console.log("addGroupProblems Error", err);
+            failResponse.body = JSON.stringify({"message": `addGroupProblems has error: ${err}`});
+            callback(null, failResponse);
+            
+        } else {
+            console.log("addGroupProblems Success", data);
+            response.body = JSON.stringify({"message": "group_problem is added"});
+            callback(null, response);
+        }
+    });
 }
