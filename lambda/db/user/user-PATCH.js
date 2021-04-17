@@ -80,6 +80,14 @@ exports.handler = (event, context, callback) => {
         case 'addGroupProblems':
             addGroupProblems(userId, groupName, problems, callback);
             break;
+
+        case 'deleteGroup':
+            deleteGroup(userId, groupName, callback);
+            break;
+
+        case 'deleteGroupProblems':
+            deleteGroupProblems(userId, groupName, problems, callback);
+            break;
             
         default:
             console.log("default_function");
@@ -305,8 +313,7 @@ function addProblems(userId, problems, callback) {
 
 //그룹을 추가해주는 함수
 function addGroup(userId, groupName, groupAuth, callback) {
-    //이전에 그룹에 가입 했었는지 확인할 필요가 있다. inactive group set확인,
-    //일단은 그룹이 추가되는지 확인
+    //inactive group set에 저장되어 있으면 복원, 아니면 새로 만듬
     let group = {};
     group["group_auth"] = groupAuth;
     group["rank"] = -1;
@@ -316,7 +323,7 @@ function addGroup(userId, groupName, groupAuth, callback) {
         Key: {
             user_id: userId,
         },
-        UpdateExpression: 'set active_group_set.#k1 = if_not_exists( active_group_set.#k1, :v1)',
+        UpdateExpression: 'set active_group_set.#k1 = if_not_exists( inactive_group_set.#k1 , if_not_exists( active_group_set.#k1, :v1) ) remove inactive_group_set.#k1',
         ExpressionAttributeNames: {"#k1": groupName},
         ExpressionAttributeValues: {":v1": group}
     };
@@ -371,6 +378,66 @@ function addGroupProblems(userId, groupName, problems, callback) {
         } else {
             console.log("addGroupProblems Success", data);
             response.body = JSON.stringify({"message": "group_problem is added"});
+            callback(null, response);
+        }
+    });
+}
+
+//active group set에서 inactive로
+function deleteGroup(userId, groupName, callback) {
+    const params = {
+        TableName: 'ACTIVE_USER',
+        Key: {
+            user_id: userId,
+        },
+        UpdateExpression: 'set inactive_group_set.#k1 = active_group_set.#k1 remove active_group_set.#k1',
+        ExpressionAttributeNames: {"#k1": groupName},
+    };
+    
+    dynamo.update(params, function(err, data) {
+        if (err) {
+            console.log("deleteGroup Error", err);
+            failResponse.body = JSON.stringify({"message": `deleteGroup has error: ${err}`});
+            callback(null, failResponse);
+            
+        } else {
+            console.log("deleteGroup Success", data);
+            response.body = JSON.stringify({"message": "group is deleted"});
+            callback(null, response);
+        }
+    });
+}
+
+//그룹장의 권한체크는 생각해 봐야할 듯.
+//그룹에서 문제들을 제거
+function deleteGroupProblems(userId, groupName, problems, callback) {
+    let updateExpression='remove';
+    let expressionAttributeNames={"#k1": groupName};
+
+    for (const property of problems) {
+        updateExpression += ` active_group_set.#k1.#p${property},`;
+        expressionAttributeNames['#p'+property] = property ;
+    }
+    updateExpression = updateExpression.slice(0, -1);
+    
+    const params = {
+        TableName: 'ACTIVE_USER',
+        Key: {
+            user_id: userId,
+        },
+        UpdateExpression: updateExpression,
+        ExpressionAttributeNames: expressionAttributeNames,
+    };
+    
+    dynamo.update(params, function(err, data) {
+        if (err) {
+            console.log("deleteGroupProblems Error", err);
+            failResponse.body = JSON.stringify({"message": `deleteGroupProblems has error: ${err}`});
+            callback(null, failResponse);
+            
+        } else {
+            console.log("deleteGroupProblems Success", data);
+            response.body = JSON.stringify({"message": "group_problem is deleted"});
             callback(null, response);
         }
     });
