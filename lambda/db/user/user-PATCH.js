@@ -74,7 +74,7 @@ exports.handler = (event, context, callback) => {
             break;
             
         case 'addGroup':
-            addGroup(userId, groupName, callback);
+            addGroup(userId, groupName, groupAuth, callback);
             break;
             
         case 'addGroupProblems':
@@ -149,36 +149,6 @@ function updateProblems(userId, callback) {
                 }
             });
             
-        }
-    });
-}
-
-//문제를 추가해준다.
-//크롤러에서 항상 기존 푼 문제에 포함되지 않는 문제를 넣어주는 것이 보장된다.
-function addProblems(userId, problems, callback) {
-    const params = {
-        TableName: 'ACTIVE_USER',
-        Key: {
-            user_id: userId,
-        },
-        AttributeUpdates: {
-              "solved_problems": {
-                  Action: "ADD",
-                  Value: problems,
-              }
-        },
-    };
-    
-    dynamo.update(params, function(err, data) {
-        if (err) {
-            console.log("addProblem Error", err);
-            failResponse.body = JSON.stringify({"message": `addProblem has error: ${err}`});
-            callback(null, failResponse);
-            
-        } else {
-            console.log("addProblem Success", data);
-            response.body = JSON.stringify({"message": "problem is added"});
-            callback(null, response);
         }
     });
 }
@@ -303,9 +273,66 @@ function updateHomepage(userId, homepage, callback) {
     });
 }
 
+//문제를 추가해준다.
+//크롤러에서 항상 기존 푼 문제에 포함되지 않는 문제를 넣어주는 것이 보장된다.
+function addProblems(userId, problems, callback) {
+    const params = {
+        TableName: 'ACTIVE_USER',
+        Key: {
+            user_id: userId,
+        },
+        AttributeUpdates: {
+              "solved_problems": {
+                  Action: "ADD",
+                  Value: problems,
+              }
+        },
+    };
+    
+    dynamo.update(params, function(err, data) {
+        if (err) {
+            console.log("addProblem Error", err);
+            failResponse.body = JSON.stringify({"message": `addProblem has error: ${err}`});
+            callback(null, failResponse);
+            
+        } else {
+            console.log("addProblem Success", data);
+            response.body = JSON.stringify({"message": "problem is added"});
+            callback(null, response);
+        }
+    });
+}
+
 //그룹을 추가해주는 함수
-function addGroup(userId, groupName, callback) {
+function addGroup(userId, groupName, groupAuth, callback) {
     //이전에 그룹에 가입 했었는지 확인할 필요가 있다. inactive group set확인,
+    //일단은 그룹이 추가되는지 확인
+    let group = {};
+    group["group_auth"] = groupAuth;
+    group["rank"] = -1;
+    
+    const params = {
+        TableName: 'ACTIVE_USER',
+        Key: {
+            user_id: userId,
+        },
+        UpdateExpression: 'set active_group_set.#k1 = if_not_exists( active_group_set.#k1, :v1)',
+        ExpressionAttributeNames: {"#k1": groupName},
+        ExpressionAttributeValues: {":v1": group}
+    };
+    
+    dynamo.update(params, function(err, data) {
+        if (err) {
+            console.log("addGroup Error", err);
+            failResponse.body = JSON.stringify({"message": `addGroup has error: ${err}`});
+            callback(null, failResponse);
+            
+        } else {
+            console.log("addGroup Success", data);
+            response.body = JSON.stringify({"message": "group is added"});
+            callback(null, response);
+        }
+    });
 }
 
 //그룹에 문제를 추가해주는 함수
