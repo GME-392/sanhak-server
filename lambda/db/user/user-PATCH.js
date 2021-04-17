@@ -80,6 +80,10 @@ exports.handler = (event, context, callback) => {
         case 'addGroupProblems':
             addGroupProblems(userId, groupName, problems, callback);
             break;
+
+        case 'deleteGroupProblems':
+            deleteGroupProblems(userId, groupName, problems, callback);
+            break;
             
         default:
             console.log("default_function");
@@ -371,6 +375,41 @@ function addGroupProblems(userId, groupName, problems, callback) {
         } else {
             console.log("addGroupProblems Success", data);
             response.body = JSON.stringify({"message": "group_problem is added"});
+            callback(null, response);
+        }
+    });
+}
+
+//그룹장의 권한체크는 생각해 봐야할 듯.
+//그룹에서 문제들을 제거
+function deleteGroupProblems(userId, groupName, problems, callback) {
+    let updateExpression='remove';
+    let expressionAttributeNames={"#k1": groupName};
+
+    for (const property of problems) {
+        updateExpression += ` active_group_set.#k1.#p${property},`;
+        expressionAttributeNames['#p'+property] = property ;
+    }
+    updateExpression = updateExpression.slice(0, -1);
+    
+    const params = {
+        TableName: 'ACTIVE_USER',
+        Key: {
+            user_id: userId,
+        },
+        UpdateExpression: updateExpression,
+        ExpressionAttributeNames: expressionAttributeNames,
+    };
+    
+    dynamo.update(params, function(err, data) {
+        if (err) {
+            console.log("deleteGroupProblems Error", err);
+            failResponse.body = JSON.stringify({"message": `deleteGroupProblems has error: ${err}`});
+            callback(null, failResponse);
+            
+        } else {
+            console.log("deleteGroupProblems Success", data);
+            response.body = JSON.stringify({"message": "group_problem is deleted"});
             callback(null, response);
         }
     });
