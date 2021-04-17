@@ -60,11 +60,6 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
 ![image](https://user-images.githubusercontent.com/26537075/114869317-cb84db80-9e31-11eb-865e-57c178356213.png)
 
 
-* addProblems
-  * solved_problems에 문제들을 추가해주는 함수.
-  * 입력받는 problems는 항상 내부의 데이터셋과 중복되지 않음이 보장되야한다.
-  * userid, problems 반드시 필요
-
 * updateProblems
   * 유저의 문제들을 업데이트 해주는 함수. active group에서 solved: true를 표시해준다.
   * userid가 필요
@@ -81,7 +76,18 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
   * 유저의 홈페이지 정보 업데이트
   * userid와 homepage 반드시 필요
 
+* addProblems
+  * solved_problems에 문제들을 추가해주는 함수.
+  * 입력받는 problems는 항상 내부의 데이터셋과 중복되지 않음이 보장되야한다.
+  * userid, problems 반드시 필요
 
+* addGroup
+  * 유저의 active group set에 그룹 추가
+  * userId, groupName 반드시 필요 groupAuth 선택 (default: false)
+
+* addGroupProblems
+  * 유저의 해당 그룹에 문제 추가 (default: (solved: false))
+  * userId, groupName, problems
 
 > 차후 수정예정
 
