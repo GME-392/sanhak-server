@@ -81,6 +81,10 @@ exports.handler = (event, context, callback) => {
             addGroupProblems(userId, groupName, problems, callback);
             break;
 
+        case 'deleteGroup':
+            deleteGroup(userId, groupName, callback);
+            break;
+
         case 'deleteGroupProblems':
             deleteGroupProblems(userId, groupName, problems, callback);
             break;
@@ -375,6 +379,31 @@ function addGroupProblems(userId, groupName, problems, callback) {
         } else {
             console.log("addGroupProblems Success", data);
             response.body = JSON.stringify({"message": "group_problem is added"});
+            callback(null, response);
+        }
+    });
+}
+
+//active group set에서 inactive로
+function deleteGroup(userId, groupName, callback) {
+    const params = {
+        TableName: 'ACTIVE_USER',
+        Key: {
+            user_id: userId,
+        },
+        UpdateExpression: 'set inactive_group_set.#k1 = active_group_set.#k1 remove active_group_set.#k1',
+        ExpressionAttributeNames: {"#k1": groupName},
+    };
+    
+    dynamo.update(params, function(err, data) {
+        if (err) {
+            console.log("deleteGroup Error", err);
+            failResponse.body = JSON.stringify({"message": `deleteGroup has error: ${err}`});
+            callback(null, failResponse);
+            
+        } else {
+            console.log("deleteGroup Success", data);
+            response.body = JSON.stringify({"message": "group is deleted"});
             callback(null, response);
         }
     });
