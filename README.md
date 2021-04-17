@@ -97,8 +97,6 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
 
 **전체 구조**
 
-* 전체 구조
-
 <img width="870" alt="DB" src="https://user-images.githubusercontent.com/64597426/115109106-d7e27300-9fae-11eb-97b9-282029667e28.png">
 
 
@@ -115,6 +113,7 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
 **group_goal**
 
 ![group_goal](https://user-images.githubusercontent.com/64597426/115109301-f7c66680-9faf-11eb-929a-8bdd0a35978f.jpg)
+
 
 
 
