@@ -30,19 +30,6 @@ exports.handler = (event, context, callback) => {
         callback(null, response);
         return;
     }
-
-    //db의 새로운 구조
-    //active_group_set은 배열이 아니라 그룹명을 키로, 내용을 값으로
-    //problem도 배열이 아닌 문제번호를 키값으로 내용을 값으로..
-    let group_set = {};
-    group_set["group_auth"] = false;
-    group_set["rank"] = -1;
-    group_set[-1] = {
-        "due_date": "default",
-        "solved": false,
-        "s_date": "default"
-    };
-    
     
     const params = {
         TableName: 'ACTIVE_USER',
@@ -54,8 +41,8 @@ exports.handler = (event, context, callback) => {
             "user_level": 0,
             "user_rank": -1,
             "user_status": true,
-            "active_group_set": {"default": group_set},
-            "inactive_group_set": {"default": group_set},
+            "active_group_set": {},
+            "inactive_group_set": {},
             "created_at": `${new Date()}`,
             "user_message": "",
             "organization": organization,
