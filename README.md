@@ -106,7 +106,7 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
 
 **전체 구조**
 
-<img width="870" alt="DB" src="https://user-images.githubusercontent.com/64597426/115109106-d7e27300-9fae-11eb-97b9-282029667e28.png">
+![db](https://user-images.githubusercontent.com/64597426/115139160-5d2b5d80-a06b-11eb-90f9-f2bc12980396.jpg)
 
 
 **member**
