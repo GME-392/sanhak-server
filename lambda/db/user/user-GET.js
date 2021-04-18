@@ -75,6 +75,10 @@ exports.handler = (event, context, callback) => {
         case 'getSolved':
             getSolved(userId, callback);
             break;
+
+        case 'getTodayProblems':
+            getTodayProblems(userId, callback);
+            break;
             
         default:
             console.log("default_function");
@@ -204,6 +208,29 @@ function getAllUsers(callback) {
         } else {
             console.log("getAllUsers Success", data);
             response.body = JSON.stringify(data);
+            callback(null, response);
+        }
+    });
+}
+
+//오늘 푼 문제 반환
+function getTodayProblems(userId, callback) {
+    console.log("getTodayProblems in function");
+    let params = {
+        Key: {
+            user_id: userId,
+        },
+        TableName: 'ACTIVE_USER',
+    };
+    dynamo.get(params, function(err, data) {
+        if (err) {
+            console.log("getSolved Error", err);
+            failResponse.body = JSON.stringify({"message": `when getting solved_problems an error has occured, error: ${err}`});
+            callback(null, failResponse);
+            
+        } else {
+            console.log("getSolved Success", data);
+            response.body = JSON.stringify(data.Item.today_problems);
             callback(null, response);
         }
     });
