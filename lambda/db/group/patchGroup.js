@@ -145,7 +145,7 @@ function updateGroupRank(id, rank, callback){
         }
     });
 }
-function addMember(id, number, callback){
+function addMember(id, new_member, callback){
     var params = {
         TableName: 'groupDataBase',
         Key: {
@@ -154,7 +154,7 @@ function addMember(id, number, callback){
         AttributeUpdates: {
             "member": {
                 "Action": "ADD",
-                "Value": number
+                "Value": new_member
             }
 
         }
