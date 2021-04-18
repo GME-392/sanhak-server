@@ -15,6 +15,7 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
 
 * getUser
   * userId에 해당하는 유저의 데이터를 비밀번호를 제외하고 가져온다.
+  * 그룹셋 정보들은 배열형태로 반환해준다.
   > ex) https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/rest-resource?userid=testid&funcname=getUser
 
 * getAllUsers
@@ -24,6 +25,8 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
 * getSolved
   * userid의 solved_problems를 반환한다.
  
+* getTodayProblems
+  * userid의 today_problems를 반환한다.
 
 
 **POST**
@@ -75,6 +78,10 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
 * updateHomepage
   * 유저의 홈페이지 정보 업데이트
   * userid와 homepage 반드시 필요
+
+* updateTodayProblems
+  * 유저의 오늘푼 문제 업데이트
+  * userid와 todayproblems 반드시 필요
 
 * addProblems
   * solved_problems에 문제들을 추가해주는 함수.
