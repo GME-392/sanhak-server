@@ -314,6 +314,11 @@ function addProblems(userId, problems, callback) {
 
 //그룹을 추가해주는 함수
 function addGroup(userId, groupName , groupId, isMaster, callback) {
+    if (groupId == "") {
+        failResponse.body = JSON.stringify({"message": "groupid is undefined"});
+        callback(null, failResponse);
+    }
+    
     //inactive group set에 저장되어 있으면 복원, 아니면 새로 만듬
     let group = {};
     group["group_auth"] = isMaster;
