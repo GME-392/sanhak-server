@@ -47,6 +47,7 @@ exports.handler = (event, context, callback) => {
             "user_message": "",
             "organization": organization,
             "solved_problems": [],
+            "today_problems": [],
             "homepage": "",
         }
     };
