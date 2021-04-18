@@ -75,6 +75,10 @@ exports.handler = (event, context, callback) => {
         case 'getSolved':
             getSolved(userId, callback);
             break;
+
+        case 'getTodayProblems':
+            getTodayProblems(userId, callback);
+            break;
             
         default:
             console.log("default_function");
@@ -99,12 +103,25 @@ function getUser(userId, callback) {
             callback(null, failResponse);
         } else {
             console.log("getUser Success", data);
+            let active = [];
+            for(let i in data.Item.active_group_set) {
+                let element = data.Item.active_group_set[i];
+                element["group_id"] = i;
+                active.push(element);
+            }
+            let inactive = [];
+            for(let i in data.Item.inactive_group_set) {
+                let element = data.Item.inactive_group_set[i];
+                element["group_id"] = i;
+                inactive.push(element);
+            }
+            
             let responseBody = {
                 "user_id": `${data.Item.user_id}`,
                 "boj_name": `${data.Item.boj_name}`,
                 "user_email": `${data.Item.user_email}`,
-                "active_group_set": `${data.Item.active_group_set}`,
-                "inactive_group_set": `${data.Item.inactive_group_set}`,
+                "active_group_set": active,
+                "inactive_group_set": inactive,
                 "user_level": `${data.Item.user_level}`,
                 "user_rank": `${data.Item.user_rank}`,
                 "created_at": `${data.Item.created_at}`,
@@ -191,6 +208,29 @@ function getAllUsers(callback) {
         } else {
             console.log("getAllUsers Success", data);
             response.body = JSON.stringify(data);
+            callback(null, response);
+        }
+    });
+}
+
+//오늘 푼 문제 반환
+function getTodayProblems(userId, callback) {
+    console.log("getTodayProblems in function");
+    let params = {
+        Key: {
+            user_id: userId,
+        },
+        TableName: 'ACTIVE_USER',
+    };
+    dynamo.get(params, function(err, data) {
+        if (err) {
+            console.log("getSolved Error", err);
+            failResponse.body = JSON.stringify({"message": `when getting solved_problems an error has occured, error: ${err}`});
+            callback(null, failResponse);
+            
+        } else {
+            console.log("getSolved Success", data);
+            response.body = JSON.stringify(data.Item.today_problems);
             callback(null, response);
         }
     });

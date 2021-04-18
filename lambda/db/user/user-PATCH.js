@@ -35,12 +35,14 @@ let failResponse = {
 exports.handler = (event, context, callback) => {
     let userId = event.userid ? event.userid : "default";
     let funcName = event.funcname ? event.funcname : "default";
-    let problems = event.problems ? event.problems : "default";
+    let problems = event.problems ? event.problems : [];
+    let todayProblems = event.todayproblems ? event.todayproblems : [];
     let groupName = event.groupname ? event.groupname : "defualt";
-    let groupRequest = event.grouprequest ? event.grouprequest : "default";
+    let groupId = event.groupid ? event.groupid : "";
     let message = event.message ? event.message : "default";
     let organization = event.organization ? event.organization : "";
     let homepage = event.homepage ? event.homepage : "";
+    let isMaster = event.ismaster ? event.ismaster : false;
      
     if (userId == "default" || userId == "" || funcName == "default" || funcName == "") {
         failResponse.body = JSON.stringify({"message":"missing content"});
@@ -68,13 +70,17 @@ exports.handler = (event, context, callback) => {
         case 'updateHomepage':
             updateHomepage(userId, homepage, callback);
             break;
+
+        case 'updateTodayProblems':
+            updateTodayProblems(userId, todayProblems, callback);
+            break;
             
         case 'addProblems':
             addProblems(userId, problems, callback);
             break;
             
         case 'addGroup':
-            addGroup(userId, groupName, groupAuth, callback);
+            addGroup(userId, groupName, groupId, isMaster, callback);
             break;
             
         case 'addGroupProblems':
@@ -281,6 +287,35 @@ function updateHomepage(userId, homepage, callback) {
     });
 }
 
+//오늘 푼 문제만을 저장한다.
+function updateTodayProblems(userId, todayProblems, callback) {
+    const params = {
+        TableName: 'ACTIVE_USER',
+        Key: {
+            user_id: userId
+        },
+        AttributeUpdates: {
+            "today_problems": {
+                Action: "PUT",
+                Value: todayProblems
+            }
+        }
+    };
+    
+    dynamo.update(params, function(err, data) {
+        if (err) {
+            console.log("updateTodayProblems Error", err);
+            failResponse.body = JSON.stringify({"message": `changing todayProblems have an error: ${err}`});
+            callback(null, failResponse);
+            
+        } else {
+            console.log("updateTodayProblems Success", data);
+            response.body = JSON.stringify({"message": "todayProblems are changed"});
+            callback(null, response);
+        }
+    });
+}
+
 //문제를 추가해준다.
 //크롤러에서 항상 기존 푼 문제에 포함되지 않는 문제를 넣어주는 것이 보장된다.
 function addProblems(userId, problems, callback) {
@@ -312,18 +347,24 @@ function addProblems(userId, problems, callback) {
 }
 
 //그룹을 추가해주는 함수
-function addGroup(userId, groupName, groupAuth, callback) {
+function addGroup(userId, groupName , groupId, isMaster, callback) {
+    if (groupId == "") {
+        failResponse.body = JSON.stringify({"message": "groupid is undefined"});
+        callback(null, failResponse);
+    }
+    
     //inactive group set에 저장되어 있으면 복원, 아니면 새로 만듬
     let group = {};
-    group["group_auth"] = groupAuth;
+    group["group_auth"] = isMaster;
     group["rank"] = -1;
+    group["group_id"] = groupId;
     
     const params = {
         TableName: 'ACTIVE_USER',
         Key: {
             user_id: userId,
         },
-        UpdateExpression: 'set active_group_set.#k1 = if_not_exists( inactive_group_set.#k1 , if_not_exists( active_group_set.#k1, :v1) ) remove inactive_group_set.#k1',
+        UpdateExpression: 'set active_group_set.#k1 = if_not_exists( active_group_set.#k1 , if_not_exists( inactive_group_set.#k1, :v1) ) remove inactive_group_set.#k1',
         ExpressionAttributeNames: {"#k1": groupName},
         ExpressionAttributeValues: {":v1": group}
     };
