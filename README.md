@@ -153,6 +153,41 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 * 요청 본문에 id(그룹id) 입력 시 DB에서 해당 테이블 삭제
 
 
+## 그룹 기능 관련 REST API 사용법
 
+** endpoint**
+
+1. https://vo2gl8s0za.execute-api.us-east-2.amazonaws.com/backend_api/user
+
+2. https://4f5hmhskte.execute-api.us-east-2.amazonaws.com/return_diff/
+
+** 1. 백준에서 지금까지 해결한 모든 문제 반환 **
+
+* 메소드 : POST
+* 요청 본문 : { "id" : "kimtaehyun98" }
+* 응답 : "body": [
+        "1000",
+        "1001",
+        "1002",
+        "1003",
+        "1005",
+        "1008",
+        "1009",
+        "1010", ... ]
+
+
+** 2. Solved-ac에서 지금까지 해결한 모든 문제의 난이도를 반환 **
+
+* 메소드 : POST
+* 요청 본문 : { "id" : "kimtaehyun98 }
+* 응답 : 
+  "body": {
+        "Bronze": "165",
+        "Silver": "256",
+        "Gold": "117",
+        "Platinum": "18",
+        "Diamond": "0",
+        "Ruby": "0"
+    }
 
 
