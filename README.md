@@ -84,7 +84,7 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
 * addGroup
   * 유저의 active group set에 그룹 추가
   * inactive group set에 동일 그룹이 있으면 복원, 그렇지 않으면 새로 생성
-  * userid, groupname 반드시 필요 groupAuth 선택 (default: false)
+  * userid, groupname, groupid 반드시 필요 ismaster 선택 (default: false)
 
 * addGroupProblems
   * 유저의 해당 그룹에 문제 추가 (default: (solved: false))
