@@ -34,10 +34,13 @@ exports.handler = function(event, context, callback) {
             "leader": event.leader,
             "name": event.name,
             "numberOfMember": event.numberOfMember,
-            "member": event.member,
+            "member": [],
+            "rank_member": event.rank_member,
             "rank": event.rank,
-            "solvedQuestion": event.solvedQuestion,
-            "weeklyQuestion": event.weeklyQuestion,
+            "group_goal": event.group_goal,
+            "group_attendance": event.group_attendance,
+            "group_info": event.group_info,
+            "max_member": event.max_member,
             "tag": event.tag,
             "group_status": event.group_status
         }
