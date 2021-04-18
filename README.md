@@ -159,6 +159,45 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 
 * 요청 본문에 id(그룹id) 입력 시 DB에서 해당 테이블 삭제
 
+**patch**
+
+* func, id의 값이 무조건 들어가야하며, 업데이트를 원하는 요소에 따라 각 수정값을 입력한다.
+
+* addMember
+  * 그룹원 추가 함수
+  * func와 id를 입력하고, 추가를 원하는 그룹원을 배열의 형식으로 추가한다.
+  * ex) {
+          "func": "addMember",
+          "id": "1",
+          "new_member": ["Jane"]
+        }
+ 
+* updateCycle
+  * 출석체크 주기를 업데이트하는 함수
+  * func와 id를 입력하고, 변경을 원하는 cycle을 문자열의 형식으로 입력한다
+  * ex) {
+          "func": "updateCycle",
+          "id": "1",
+          "cycle": "day"/"week"
+        }
+
+* updateNumberMember
+  * 그룹원의 인원을 변경하는 함수
+  * func와 id를 입력하고, 변경을 원하는 그룹원 수를 숫자 형식으로 입력한다
+  * ex) {
+          "func": "updateNumberMember",
+          "id": "1",
+          "number_member": 3
+        }
+
+* updateNumberMember
+  * 그룹원의 인원을 변경하는 함수
+  * func와 id를 입력하고, 변경을 원하는 그룹원 수를 숫자 형식으로 입력한다
+  * ex) {
+          "func": "updateNumberMember",
+          "id": "1",
+          "number_member": 3
+        }
 
 ## 그룹 기능 관련 REST API 사용법
 
