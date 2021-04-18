@@ -36,6 +36,7 @@ exports.handler = (event, context, callback) => {
     let userId = event.userid ? event.userid : "default";
     let funcName = event.funcname ? event.funcname : "default";
     let problems = event.problems ? event.problems : [];
+    let todayProblems = event.todayproblems ? event.todayproblems : [];
     let groupName = event.groupname ? event.groupname : "defualt";
     let groupId = event.groupid ? event.groupid : "";
     let message = event.message ? event.message : "default";
@@ -68,6 +69,10 @@ exports.handler = (event, context, callback) => {
             
         case 'updateHomepage':
             updateHomepage(userId, homepage, callback);
+            break;
+
+        case 'updateTodayProblems':
+            updateTodayProblems(userId, todayProblems, callback);
             break;
             
         case 'addProblems':
@@ -277,6 +282,35 @@ function updateHomepage(userId, homepage, callback) {
         } else {
             console.log("updateHomepage Success", data);
             response.body = JSON.stringify({"message": "homepage is changed"});
+            callback(null, response);
+        }
+    });
+}
+
+//오늘 푼 문제만을 저장한다.
+function updateTodayProblems(userId, todayProblems, callback) {
+    const params = {
+        TableName: 'ACTIVE_USER',
+        Key: {
+            user_id: userId
+        },
+        AttributeUpdates: {
+            "today_problems": {
+                Action: "PUT",
+                Value: todayProblems
+            }
+        }
+    };
+    
+    dynamo.update(params, function(err, data) {
+        if (err) {
+            console.log("updateTodayProblems Error", err);
+            failResponse.body = JSON.stringify({"message": `changing todayProblems have an error: ${err}`});
+            callback(null, failResponse);
+            
+        } else {
+            console.log("updateTodayProblems Success", data);
+            response.body = JSON.stringify({"message": "todayProblems are changed"});
             callback(null, response);
         }
     });
