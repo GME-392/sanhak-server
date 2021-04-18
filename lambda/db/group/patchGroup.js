@@ -86,14 +86,7 @@ exports.handler = function(event, context, callback) {
 }
 
 function updateProblems(id, probs, callback){
-    let probs_obj = {};
-    var params = {
-        TableName: 'groupDataBase',
-        Key: {
-            "id": id
-        }
-    };
-    
+        
 }
 function updateCycle(id, cycle, callback){
     var params = {
