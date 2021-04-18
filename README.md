@@ -161,7 +161,7 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 
 2. https://4f5hmhskte.execute-api.us-east-2.amazonaws.com/return_diff/
 
-**1. 백준에서 지금까지 해결한 모든 문제 반환 **
+**1. 백준에서 지금까지 해결한 모든 문제 반환**
 
 * 메소드 : POST
 * 요청 본문 : { "id" : "kimtaehyun98" }
@@ -176,7 +176,7 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
         "1010", ... ]
 
 
-**2. Solved-ac에서 지금까지 해결한 모든 문제의 난이도를 반환 **
+**2. Solved-ac에서 지금까지 해결한 모든 문제의 난이도를 반환**
 
 * 메소드 : POST
 * 요청 본문 : { "id" : "kimtaehyun98 }
