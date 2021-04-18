@@ -99,12 +99,25 @@ function getUser(userId, callback) {
             callback(null, failResponse);
         } else {
             console.log("getUser Success", data);
+            let active = [];
+            for(let i in data.Item.active_group_set) {
+                let element = data.Item.active_group_set[i];
+                element["group_id"] = i;
+                active.push(element);
+            }
+            let inactive = [];
+            for(let i in data.Item.inactive_group_set) {
+                let element = data.Item.inactive_group_set[i];
+                element["group_id"] = i;
+                inactive.push(element);
+            }
+            
             let responseBody = {
                 "user_id": `${data.Item.user_id}`,
                 "boj_name": `${data.Item.boj_name}`,
                 "user_email": `${data.Item.user_email}`,
-                "active_group_set": `${data.Item.active_group_set}`,
-                "inactive_group_set": `${data.Item.inactive_group_set}`,
+                "active_group_set": active,
+                "inactive_group_set": inactive,
                 "user_level": `${data.Item.user_level}`,
                 "user_rank": `${data.Item.user_rank}`,
                 "created_at": `${data.Item.created_at}`,
