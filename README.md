@@ -87,16 +87,16 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
   * userid, groupname, groupid 반드시 필요 ismaster 선택 (default: false)
 
 * addGroupProblems
-  * 유저의 해당 그룹에 문제 추가 (default: (solved: false))
-  * userid, groupname, problems
+  * groupid에 해당하는 그룹에 문제 추가 (default: (solved: false))
+  * userid, groupid, problems 반드시 필요
 
 * deleteGroup
   * 그룹을 활성 그룹 목록에서 제거, 비활성 그룹 목록에 삽입
-  * userid, groupname 반드시 필요
+  * userid, groupid 반드시 필요
 
 * deleteGroupProblems(userId, groupName, problems, callback)
   * 그룹에서 problems에 해당하는 문제 제거
-  * userid, groupname, problems 반드시 
+  * userid, groupid, problems 반드시 
 
 > 차후 수정예정
 
