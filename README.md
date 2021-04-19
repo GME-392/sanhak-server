@@ -198,6 +198,15 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
           "id": "1",
           "number_member": 3
         }
+* updateAttendance
+  * 출석여부를 업데이트 하는 함수
+  * func와 id를 입력하고, 변경을 원하는 그룹원의 이름과 출석여부를 문자열 형식으로 입력한다
+  * ex) {
+          "func": "updateAttendance",
+          "id": "1",
+          "name": "taehyun98",
+          "attend": "absent"
+        }
 
 ## 그룹 기능 관련 REST API 사용법
 
