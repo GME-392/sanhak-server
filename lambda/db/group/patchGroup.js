@@ -43,52 +43,8 @@ exports.handler = function(event, context, callback) {
     var rank = event.rank;
     var new_member = event.new_member;
     var number = event.number;var AWS = require('aws-sdk');
-// Set the region 
-AWS.config.update({
-    region: 'ap-northeast-2',
-    endpoint: "http://dynamodb.ap-northeast-2.amazonaws.com"
-})
-// Create the DynamoDB service object
-const dynamo = new AWS.DynamoDB.DocumentClient();
-
-var response = {
-    "statusCode": 200,
-    "headers": {
-        "Access-Control-Allow-Headers": "Content-Type",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
-        "GET": "success",
-    },
-    "isBase64Encoded": false
-};
-
-var failResponse = {
-    "statusCode": 400,
-    "headers": {
-        "GET": "fail"
-    },
-    "isBase64Encoded": false
-};
 
 
-exports.handler = function(event, context, callback) {
-    var func = event.func;
-    var id = event.id;
-    var probs = event.probs;
-    var member = event.member;
-    var baj_id = event.baj_id;
-    var sum = event.sum;
-    var rank = event.rank;
-    var attend = event.attend;
-    var cycle =  event.cycle;
-    var prob_num = event.prob_num;
-    var prob_level = event.prob_level;
-    var number_member = event.number_member;
-    var rank = event.rank;
-    var new_member = event.new_member;
-    var number = event.number;
-    var name = event.name;
-    
 
     switch (func) {
         case 'updateProblems':
@@ -287,48 +243,7 @@ function updateAttendance(id, name, attend, callback){
         }
     });
 }
-    
-
-    switch (func) {
-        case 'updateProblems':
-            updateProblems(id, probs, callback);
-            break;
-        
-        case 'updateCycle':
-            updateCycle(id, cycle, callback);
-            break;
-        
-        case 'updateProblemNumber':
-            updateProblemNumber(id, callback);
-            break;
-       
-        case 'updateNumberMember':
-            updateNumberMember(id, number_member, callback);
-            break;
-       
-        case 'updateGroupRank':
-            updateGroupRank(id, rank, callback);
-            break;
-        
-        case 'addMember':
-            addMember(id, new_member, callback);
-            break;
-        
-        case 'addRankMember':
-            addRankMember(id, callback);
-            break;
-        
-        case 'deleteMember':
-            deleteMember(id, callback);
-            break;
-        
-        case 'deleteRankMember':
-            deleteRankMember(id, callback);
-            break;
-        
-    }
-}
-
+ 
 function updateProblems(id, probs, callback){
         
 }
