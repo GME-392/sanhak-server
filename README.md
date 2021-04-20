@@ -123,11 +123,11 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
 
 **group_attendance**
 
+![group_attendance](https://user-images.githubusercontent.com/64597426/115368893-7f0b1880-a202-11eb-85d2-079bae3df59a.jpg)
 
 
 **group_goal**
 
-![group_goal](https://user-images.githubusercontent.com/64597426/115109301-f7c66680-9faf-11eb-929a-8bdd0a35978f.jpg)
 
 
 
