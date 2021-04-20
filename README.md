@@ -118,7 +118,7 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
 
 **rank_member**
 
-![rank_member](https://user-images.githubusercontent.com/64597426/115420777-6157a680-a236-11eb-800a-c0772ebc161f.jpg)
+![rank_member](https://user-images.githubusercontent.com/64597426/115421946-636e3500-a237-11eb-975a-da244fba9900.jpg)
 
 
 **group_attendance**
