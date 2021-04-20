@@ -128,6 +128,7 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
 
 **group_goal**
 
+![group_goal](https://user-images.githubusercontent.com/64597426/115368934-8c280780-a202-11eb-884b-fa61197c0ba5.jpg)
 
 
 
