@@ -118,17 +118,19 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
 
 **rank_member**
 
-![rank_member](https://user-images.githubusercontent.com/64597426/115421946-636e3500-a237-11eb-975a-da244fba9900.jpg)
+![rank_member](https://user-images.githubusercontent.com/64597426/115429531-75070b00-a23e-11eb-8076-71ed2f05cead.jpg)
 
 
 **group_attendance**
 
-![group_attendance](https://user-images.githubusercontent.com/64597426/115368893-7f0b1880-a202-11eb-85d2-079bae3df59a.jpg)
+![group_attendance](https://user-images.githubusercontent.com/64597426/115429562-7b958280-a23e-11eb-93d2-ad0346ee3dfa.jpg)
+
 
 
 **group_goal**
 
-![group_goal](https://user-images.githubusercontent.com/64597426/115368934-8c280780-a202-11eb-884b-fa61197c0ba5.jpg)
+![group_goal](https://user-images.githubusercontent.com/64597426/115429607-85b78100-a23e-11eb-9e32-404531d6680a.jpg)
+
 
 
 
