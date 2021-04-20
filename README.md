@@ -116,7 +116,7 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
 ![db](https://user-images.githubusercontent.com/64597426/115139160-5d2b5d80-a06b-11eb-90f9-f2bc12980396.jpg)
 
 
-**member**
+**rank_member**
 
 ![member](https://user-images.githubusercontent.com/64597426/115109127-f34d7e00-9fae-11eb-91e6-925f415041b6.jpg)
 
