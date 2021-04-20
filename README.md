@@ -113,17 +113,16 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
 
 **전체 구조**
 
-![db](https://user-images.githubusercontent.com/64597426/115139160-5d2b5d80-a06b-11eb-90f9-f2bc12980396.jpg)
+![db](https://user-images.githubusercontent.com/64597426/115368713-4f5c1080-a202-11eb-8537-2914f12498ee.jpg)
 
 
 **rank_member**
 
-![member](https://user-images.githubusercontent.com/64597426/115109127-f34d7e00-9fae-11eb-91e6-925f415041b6.jpg)
+![rank_member](https://user-images.githubusercontent.com/64597426/115368793-669afe00-a202-11eb-929c-16e3bbf2ac76.jpg)
 
 
 **group_attendance**
 
-![group_attendance](https://user-images.githubusercontent.com/64597426/115109148-0c562f00-9faf-11eb-80a3-752823066809.jpg)
 
 
 **group_goal**
