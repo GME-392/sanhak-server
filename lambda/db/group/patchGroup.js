@@ -41,7 +41,7 @@ exports.handler = function(event, context, callback) {
     var number = event.number;
     var name = event.name;
     var rank_inGroup = event.rank_inGroup;
-    var rank_score = event.rank_score;
+    var score = event.score;
     var prob_num = event.prob_num;
     var goal = event.goal;
     var prob_level = event.prob_level;
@@ -86,7 +86,7 @@ exports.handler = function(event, context, callback) {
             break;
         
         case 'updatePersonalScore':
-            updatePersonalScore(id, name, rank_score, callback);
+            updatePersonalScore(id, name, score, callback);
             break;
         
         case 'updateProblemLevel':
@@ -350,15 +350,15 @@ function updatePersonalRank(id, name, rank_inGroup, callback){
         }
     });
 }
-function updatePersonalScore(id, name, rank_score, callback){
+function updatePersonalScore(id, name, score, callback){
     var params = {
         TableName: 'groupDataBase',
         Key: {
             "id": id
         },
-        UpdateExpression: "SET rank_member.#name.score = :rank_score",
+        UpdateExpression: "SET rank_member.#name.score = :score",
         ExpressionAttributeNames: {"#name": name},
-        ExpressionAttributeValues: {":rank_score": rank_score}
+        ExpressionAttributeValues: {":score": score}
             
     };
     
