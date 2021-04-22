@@ -170,84 +170,86 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
   * 그룹원 추가 함수
   * func와 id를 입력하고, 추가를 원하는 그룹원을 배열의 형식으로 추가한다.
   * ex) 
-  
+  ![image](https://user-images.githubusercontent.com/64597426/115735897-cbeb1c80-a3c5-11eb-81dd-b278db43c497.png)
+
  
 * updateCycle
   * 출석체크 주기를 업데이트하는 함수
   * func와 id를 입력하고, 변경을 원하는 cycle을 문자열의 형식으로 입력한다
   * ex) 
+ ![image](https://user-images.githubusercontent.com/64597426/115736122-005ed880-a3c6-11eb-9957-5f2db131f56a.png)
 
 
 * updateProblemNumber
   * 출석 확인 문제 갯수를 변경하는 함수
   * func와 id를 입력하고, 변경을 원하는 출석 문제를 숫자 형식으로 입력한다
   * ex) 
+ ![image](https://user-images.githubusercontent.com/64597426/115738224-d3abc080-a3c7-11eb-8153-745d781733dd.png)
 
 
 * updateNumberMember
   * 그룹원의 인원을 변경하는 함수
   * func와 id를 입력하고, 변경을 원하는 그룹원 수를 숫자 형식으로 입력한다
   * ex) 
+ ![image](https://user-images.githubusercontent.com/64597426/115739107-98f65800-a3c8-11eb-92ec-c8160af05849.png)
 
 
 * updateAttendance
   * 출석여부를 업데이트 하는 함수
   * func와 id를 입력하고, 변경을 원하는 그룹원의 이름과 출석여부를 문자열 형식으로 입력한다
   * ex) 
-  
+ ![image](https://user-images.githubusercontent.com/64597426/115739626-0b673800-a3c9-11eb-92f1-95d159cfeef8.png)
+
 
 * updateProblems
   * 출석확인 문제를 업데이트 하는 함수
   * func와 id를 입력하고, 변경을 원하는 출석문제를 배열 형식으로 입력한다
   * ex) 
+ ![image](https://user-images.githubusercontent.com/64597426/115739883-45383e80-a3c9-11eb-8c43-de545e5eed7e.png)
 
 
 * updateGroupGoal
   * 그룹 생성의 목적을 변경하는 함수
   * func와 id를 입력하고, 변경을 원하는 목표를 문자열 형식으로 입력한다
   * ex)  
+ ![image](https://user-images.githubusercontent.com/64597426/115740044-69941b00-a3c9-11eb-938d-b981f6c47beb.png)
 
 
 * updateGroupNotice
   * 그룹 공지를 변경하는 함수
   * func와 id를 입력하고, 변경을 원하는 공지를 문자열 형식으로 입력한다
   * ex) 
+ ![image](https://user-images.githubusercontent.com/64597426/115740205-8f212480-a3c9-11eb-9592-e9bbc198756c.png)
 
 
 * updateProblemLevel
   * 출석확인 문제의 난이도를 업데이트 하는 함수
   * func와 id를 입력하고, 변경을 원하는 문제의 난이도를 배열 형식으로 입력한다
   * ex) 
+ ![image](https://user-images.githubusercontent.com/64597426/115742937-1ec7d280-a3cc-11eb-9bc6-2e5312f4d57d.png)
 
 
 * updateGroupRank
   * 그룹의 랭크를 업데이트 하는 함수
   * func와 id를 입력하고, 변경을 원하는 그룹의 랭크를 숫자 형식으로 입력한다
   * ex) 
+ ![image](https://user-images.githubusercontent.com/64597426/115746419-4b311e00-a3cf-11eb-8a6a-babc6d28ec02.png)
 
 
 * updatePersonalRank
   * 멤버의 그룹 내 랭크를 업데이트 하는 함수
   * func와 id를 입력하고, 변경을 원하는 멤버의 이름과 그룹 내의 랭크를 각각 문자열과 숫자 형식으로 입력한다
   * ex) 
+ ![image](https://user-images.githubusercontent.com/64597426/115746878-ae22b500-a3cf-11eb-9d24-3fa160ebbbff.png)
 
 
 * updatePersonalScore
   * 랭크 판별을 위한 멤버 개인의 점수를 업데이트 하는 함수
   * func와 id를 입력하고, 변경을 원하는 멤버의 이름과 점수를 각각 문자열과 숫자 형식으로 입력한다
   * ex) 
+ ![image](https://user-images.githubusercontent.com/64597426/115747230-ff32a900-a3cf-11eb-86e1-5c50e9eb7535.png)
 
 
-* updateGroupRank
-  * 
-  * func와 id를 입력하고, 변경을 원하는  형식으로 입력한다
-  * ex) 
-
-
-* updateGroupRank
-  * 
-  * func와 id를 입력하고, 변경을 원하는  형식으로 입력한다
-  * ex) 
 
 
 ## 그룹 기능 관련 REST API 사용법
