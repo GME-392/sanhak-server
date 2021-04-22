@@ -153,6 +153,7 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
   * DB의 모든 데이터들을 한번에 불러온다
   * 'func=getAllGroup'을 쿼리문자열에 입력한다.
 
+
 **post**
 
 * 요청 본문에 id(그룹id), leader(그룹명), name(그룹이름), member(그룹멤버) 등의 데이터를 입력하면 DB에 테이블이 생성된다.
@@ -168,47 +169,80 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 * addMember
   * 그룹원 추가 함수
   * func와 id를 입력하고, 추가를 원하는 그룹원을 배열의 형식으로 추가한다.
-  * ex) {
-          "func": "addMember",
-          "id": "1",
-          "new_member": ["Jane"]
-        }
+  * ex) 
+
  
 * updateCycle
   * 출석체크 주기를 업데이트하는 함수
   * func와 id를 입력하고, 변경을 원하는 cycle을 문자열의 형식으로 입력한다
-  * ex) {
-          "func": "updateCycle",
-          "id": "1",
-          "cycle": "day"/"week"
-        }
+  * ex) 
+
+
+* updateProblemNumber
+  * 출석 확인 문제 갯수를 변경하는 함수
+  * func와 id를 입력하고, 변경을 원하는 출석 문제를 숫자 형식으로 입력한다
+  * ex) 
+
 
 * updateNumberMember
   * 그룹원의 인원을 변경하는 함수
   * func와 id를 입력하고, 변경을 원하는 그룹원 수를 숫자 형식으로 입력한다
-  * ex) {
-          "func": "updateNumberMember",
-          "id": "1",
-          "number_member": 3
-        }
+  * ex) 
 
-* updateNumberMember
-  * 그룹원의 인원을 변경하는 함수
-  * func와 id를 입력하고, 변경을 원하는 그룹원 수를 숫자 형식으로 입력한다
-  * ex) {
-          "func": "updateNumberMember",
-          "id": "1",
-          "number_member": 3
-        }
+
 * updateAttendance
   * 출석여부를 업데이트 하는 함수
   * func와 id를 입력하고, 변경을 원하는 그룹원의 이름과 출석여부를 문자열 형식으로 입력한다
-  * ex) {
-          "func": "updateAttendance",
-          "id": "1",
-          "name": "taehyun98",
-          "attend": "absent"
-        }
+  * ex) 
+
+
+* updateProblems
+  * 출석확인 문제를 업데이트 하는 함수
+  * func와 id를 입력하고, 변경을 원하는 출석문제를 배열 형식으로 입력한다
+  * ex) 
+
+
+* updateGroupGoal
+  * 그룹 생성의 목적을 변경하는 함수
+  * func와 id를 입력하고, 변경을 원하는 목표를 문자열 형식으로 입력한다
+  * ex) 
+
+
+* updateProblemLevel
+  * 출석확인 문제의 난이도를 업데이트 하는 함수
+  * func와 id를 입력하고, 변경을 원하는 문제의 난이도를 배열 형식으로 입력한다
+  * ex) 
+
+
+* updateGroupRank
+  * 그룹의 랭크를 업데이트 하는 함수
+  * func와 id를 입력하고, 변경을 원하는 그룹의 랭크를 숫자 형식으로 입력한다
+  * ex) 
+
+
+* updatePersonalRank
+  * 멤버의 그룹 내 랭크를 업데이트 하는 함수
+  * func와 id를 입력하고, 변경을 원하는 멤버의 이름과 그룹 내의 랭크를 각각 문자열과 숫자 형식으로 입력한다
+  * ex) 
+
+
+* updatePersonalScore
+  * 랭크 판별을 위한 멤버 개인의 점수를 업데이트 하는 함수
+  * func와 id를 입력하고, 변경을 원하는 멤버의 이름과 점수를 각각 문자열과 숫자 형식으로 입력한다
+  * ex) 
+
+
+* updateGroupRank
+  * 
+  * func와 id를 입력하고, 변경을 원하는  형식으로 입력한다
+  * ex) 
+
+
+* updateGroupRank
+  * 
+  * func와 id를 입력하고, 변경을 원하는  형식으로 입력한다
+  * ex) 
+
 
 ## 그룹 기능 관련 REST API 사용법
 
