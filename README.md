@@ -170,7 +170,7 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
   * 그룹원 추가 함수
   * func와 id를 입력하고, 추가를 원하는 그룹원을 배열의 형식으로 추가한다.
   * ex) 
-
+  
  
 * updateCycle
   * 출석체크 주기를 업데이트하는 함수
@@ -194,7 +194,7 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
   * 출석여부를 업데이트 하는 함수
   * func와 id를 입력하고, 변경을 원하는 그룹원의 이름과 출석여부를 문자열 형식으로 입력한다
   * ex) 
-
+  
 
 * updateProblems
   * 출석확인 문제를 업데이트 하는 함수
@@ -205,6 +205,12 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 * updateGroupGoal
   * 그룹 생성의 목적을 변경하는 함수
   * func와 id를 입력하고, 변경을 원하는 목표를 문자열 형식으로 입력한다
+  * ex)  
+
+
+* updateGroupNotice
+  * 그룹 공지를 변경하는 함수
+  * func와 id를 입력하고, 변경을 원하는 공지를 문자열 형식으로 입력한다
   * ex) 
 
 
