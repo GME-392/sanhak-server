@@ -1,6 +1,6 @@
-//처음에 넣을 때 쓰는 함수
-//모든 데이터를 받아서 한번에 처리해준다.
-//예측으로는 ID, PW, bojName, email이 4가지만 들어온다.
+//DELETE하면 모든 데이터를 inactive db로 옮겨야 함
+//삭제요청은 아이디와 비밀번호가 들어올 때 작동해야할 듯
+//1.아이디가 존재해야하고, 2. 아이디와 비밀번호가 일치해야한다.
 
 let AWS = require('aws-sdk');
 
@@ -11,69 +11,112 @@ AWS.config.update({
 
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
+let response = {
+    "statusCode": 200,
+    "headers": {
+        "DELETE": "success",
+    },
+    "isBase64Encoded": false
+};
+
+let failResponse = {
+    "statusCode": 400,
+    "headers": {
+        "DELETE": "fail",
+    },
+    "isBase64Encoded": false
+};
+
+//응답 메시지의 성공 케이스를 선언하고 실패하는 경우 수정해서 응답하면 좋을 듯.
 exports.handler = (event, context, callback) => {
-    let userId = event.userid ? event.userid : "default";
-    let userPw = event.userpw ? event.userpw : "default";
-    let bojName = event.bojname ? event.bojname : "default";
-    let userEmail = event.useremail ? event.useremail : "default";
-    let organization = event.organization ? event.organization : "";
+    let userId = event ? event.userid : "default";
+    let userPw = event ? event.userpw : "defalut";
     
-    if (userId == "default" || userPw == "default" || bojName == "default" || userEmail == "default"
-    || userId =="" || userPw == "" || bojName == "" || userEmail == "") {
-        console.log("userId, userPw, bojName, userEmail: ", userId, userPw, bojName, userEmail);
-        let response = {
-            "statusCode": 400,
-            "headers": {"post":"fail"},
-            "body": JSON.stringify({"message":"missing content"}),
-            "isBase64Encoded": false
-        };
-        callback(null, response);
+    //id와 pw가 입력되지 않은 경우
+    if (userId == "default" || userPw == "default" || userId == "" || userPw == "") {
+        console.log("userId, userPw:", userId, userPw);
+        failResponse.body = JSON.stringify({"message":"missing content"});
+        callback(null, failResponse);
         return;
     }
     
-    const params = {
+    transferUserData(userId, userPw, callback);
+};
+
+//userData를 inactive그룹으로 옮김
+function transferUserData(userId, userPw, callback) {
+    let params = {
+        Key: {
+            user_id: userId,
+        },
         TableName: 'ACTIVE_USER',
-        Item: {
-            "user_id": userId,
-            "user_pw": userPw,
-            "boj_name": bojName,
-            "user_email": userEmail,
-            "user_level": 0,
-            "user_rank": -1,
-            "user_status": true,
-            "active_group_set": {},
-            "inactive_group_set": {},
-            "created_at": `${new Date()}`,
-            "user_message": "",
-            "organization": organization,
-            "solved_problems": [],
-            "today_problems": [],
-            "homepage": "",
-        }
     };
+    let userData;
+    dynamo.get(params, function(err, data) {
+        if (err) {
+            console.log("getUserData Error", err);
+            failResponse.body = JSON.stringify({"message": `getting userid: ${userId} is failed`});
+            callback(null, failResponse);
+        } else {
+            userData = {
+                
+            };
+            
+            params = {
+                TableName: 'INACTIVE_USER',
+                Item: {
+                    "user_id": data.Item.user_id,
+                    "boj_name": data.Item.boj_name,
+                    "user_email": data.Item.user_email,
+                    "active_group_set": data.Item.active_group_set,
+                    "inactive_group_set": data.Item.inactive_group_set,
+                    "user_level": data.Item.user_level,
+                    "user_rank": data.Item.user_rank,
+                    "created_at": `${data.Item.created_at}`,
+                    "user_status": false,
+                    "user_message": `${data.Item.user_message}`,
+                    "organization": `${data.Item.organization}`,
+                    "solved_problems": data.Item.solved_problems,
+                    "homepage": `${data.Item.homepage}`,
+                },
+            };
+            dynamo.put(params, function(err, data) {
+                if (err) {
+                    console.log("Error", err);
+                    failResponse.body = JSON.stringify({"message":"error occured when putting item", "data": userData});
+                    callback(null, failResponse);
+                } else {
+                    console.log("Success", data);
+                    response.body = JSON.stringify({"message": "get, delete, post item success", "data": data});
+                }
+            });
+        }
+    });
     
-    dynamo.put(params, function(err, data) {
+    params = {
+        Key: {
+            user_id: userId
+        },
+        TableName: 'ACTIVE_USER',
+        Expected: {
+            user_id: {
+                Value: userId,
+                Exist: true,
+            },
+            user_pw: {
+                Value: userPw,
+                Exist: true
+            }
+        },
+    };
+    dynamo.delete(params, function(err, data) {
         if (err) {
             console.log("Error", err);
-            let failResponse = {
-                "statusCode": 400,
-                "headers": {"post":"fail"},
-                "body": JSON.stringify({"message":"error occured when putting item"}),
-                "isBase64Encoded": false
-            };
+            failResponse.body = JSON.stringify({"message":"error occured when deleting item", "error":`${err}`});
             callback(null, failResponse);
         } else {
             console.log("Success", data);
-            let responseBody = {"message": "putting item success"};
-            let response = {
-                "statusCode": 200,
-                "headers": {
-                    "post":"success",
-                },
-                "body": JSON.stringify(responseBody),
-                "isBase64Encoded": false
-            };
             callback(null, response);
         }
     });
-};
+}
