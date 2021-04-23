@@ -79,12 +79,12 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
   * 유저의 홈페이지 정보 업데이트
   * userid와 homepage 반드시 필요
 
-* updateTodayProblems
-  * 유저의 오늘푼 문제 업데이트
-  * userid와 todayproblems 반드시 필요
+* updateGroupRank(userId, groupId, rank, callback)
+  * 유저의 그룹안 랭크 업데이트
+  * userid와 groupId반드시 
 
-* addProblems
-  * solved_problems에 문제들을 추가해주는 함수.
+* updateSoled
+  * solved_problems의 문제를 대체하는 함수
   * 입력받는 problems는 항상 내부의 데이터셋과 중복되지 않음이 보장되야한다.
   * userid, problems 반드시 필요
 
