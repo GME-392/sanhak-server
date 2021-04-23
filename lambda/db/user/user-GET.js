@@ -28,7 +28,6 @@ let response = {
     "isBase64Encoded": false
 };
 
-
 let failResponse = {
     "statusCode": 400,
     "headers": {
@@ -40,16 +39,9 @@ let failResponse = {
 //event에서 값을 받아오는 것은 proxy통합을 사용해야 가능하다.
 //null은 들어오지 않을 것이라 가정하자.
 exports.handler = (event, context, callback) => {
-    let userId = event.queryStringParameters ? event.queryStringParameters.userid : "default";
-    let funcName = event.queryStringParameters ? event.queryStringParameters.funcname : "default";
-    
-    //id와 pw가 입력되지 않은 경우
-    if (userId == "default" || funcName == "default" || userId == "" || funcName == "") {
-        console.log("userId, funcName:", userId, funcName);
-        failResponse.body = JSON.stringify({"message":"missing content - id, function name"});
-        callback(null, failResponse);
-        return;
-    }
+    let userId = event.queryStringParameters.userid ? event.queryStringParameters.userid : "";
+    let funcName = event.queryStringParameters.funcname ? event.queryStringParameters.funcname : "";
+    let groupId = event.queryStringParameters.groupid ? event.queryStringParameters.groupid : "";
     
     switch (funcName) {
         case 'getUser':
@@ -60,14 +52,6 @@ exports.handler = (event, context, callback) => {
             isAvailableID(userId, callback);
             break;
             
-        case 'isLogginable':
-            
-            break;
-            
-        case 'getUserProblems':
-            
-            break;
-            
         case 'getAllUsers':
             getAllUsers(callback);
             break;
@@ -75,10 +59,10 @@ exports.handler = (event, context, callback) => {
         case 'getSolved':
             getSolved(userId, callback);
             break;
-
-        case 'getTodayProblems':
-            getTodayProblems(userId, callback);
-            break;
+            
+        case 'getGroupById':
+            getGroupById(userId, groupId, callback);
+            break; 
             
         default:
             console.log("default_function");
@@ -90,6 +74,7 @@ exports.handler = (event, context, callback) => {
 //id에 따라 pw제외한 모든 데이터 가져오기
 function getUser(userId, callback) {
     console.log("getUser in function");
+    
     let params = {
         Key: {
             user_id: userId,
@@ -159,16 +144,6 @@ function isAvailableID(userId, callback) {
     });
 }
 
-//id와 pw가 유효한지 확인
-function isLogginable(userId, password, callback) {
-    
-}
-
-//유저의 문제만 가져오기
-function getUserProblems(userId) {
-    
-}
-
 //푼 문제들 가져오기
 function getSolved(userId, callback) {
     console.log("getSolved in function");
@@ -213,24 +188,30 @@ function getAllUsers(callback) {
     });
 }
 
-//오늘 푼 문제 반환
-function getTodayProblems(userId, callback) {
-    console.log("getTodayProblems in function");
+//group_id로 그룹데이터 가져오기
+function getGroupById(userId, groupId, callback) {
+    if (groupId == "") {
+        failResponse.body = JSON.stringify({"message": "groupId is empty"});
+        callback(null, failResponse);
+    }
+    
     let params = {
         Key: {
             user_id: userId,
         },
         TableName: 'ACTIVE_USER',
+        ProjectionExpression: "active_group_set.#g",
+        ExpressionAttributeNames: {"#g": groupId},
     };
-    dynamo.get(params, function(err, data) {
+    dynamo.scan(params, function(err, data) {
         if (err) {
-            console.log("getSolved Error", err);
-            failResponse.body = JSON.stringify({"message": `when getting solved_problems an error has occured, error: ${err}`});
+            console.log("getGroupById Error", err);
+            failResponse.body = JSON.stringify({"message": `getGroupById has an error: ${err}`});
             callback(null, failResponse);
             
         } else {
-            console.log("getSolved Success", data);
-            response.body = JSON.stringify(data.Item.today_problems);
+            console.log("getGroupById Success", data);
+            response.body = JSON.stringify(data.Item.solved_problems);
             callback(null, response);
         }
     });
