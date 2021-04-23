@@ -24,9 +24,6 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
 
 * getSolved
   * userid의 solved_problems를 반환한다.
- 
-* getTodayProblems
-  * userid의 today_problems를 반환한다.
 
 
 **POST**
@@ -44,6 +41,8 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
 * 요청 본문에 userid, userpw가 들어가야한다.
 
 * 해당id가 없거나 비밀번호가 틀리면 오류 메시지를 반환한다.
+
+* INACTIVE_USER 데이터베이스로 해당 유저데이터가 옮겨진다.
 
 
 
@@ -83,7 +82,7 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
   * 유저의 그룹안 랭크 업데이트
   * userid와 groupId반드시 
 
-* updateSoled
+* updateSolved
   * solved_problems의 문제를 대체하는 함수
   * 입력받는 problems는 항상 내부의 데이터셋과 중복되지 않음이 보장되야한다.
   * userid, problems 반드시 필요
