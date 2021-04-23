@@ -36,7 +36,7 @@ exports.handler = (event, context, callback) => {
     let userId = event.userid ? event.userid : "default";
     let funcName = event.funcname ? event.funcname : "default";
     let problems = event.problems ? event.problems : [];
-    let todayProblems = event.todayproblems ? event.todayproblems : [];
+    let grouprank = event.grouprank ? event.grouprank : -1;
     let groupName = event.groupname ? event.groupname : "defualt";
     let groupId = event.groupid ? event.groupid : "";
     let message = event.message ? event.message : "default";
@@ -63,20 +63,16 @@ exports.handler = (event, context, callback) => {
             updateOrganization(userId, organization, callback);
             break;
             
-        case 'updateSolved':
-            updateSolved(userId, problems, callback);
-            break;
-            
         case 'updateHomepage':
             updateHomepage(userId, homepage, callback);
             break;
-
-        case 'updateTodayProblems':
-            updateTodayProblems(userId, todayProblems, callback);
-            break;
             
-        case 'addProblems':
-            addProblems(userId, problems, callback);
+        case 'updateGroupRank':
+            updateGroupRank(userId, groupId, grouprank, callback);
+            break;
+        
+        case 'updateSolved':
+            updateSolved(userId, problems, callback);
             break;
             
         case 'addGroup':
@@ -84,15 +80,15 @@ exports.handler = (event, context, callback) => {
             break;
             
         case 'addGroupProblems':
-            addGroupProblems(userId, groupName, problems, callback);
+            addGroupProblems(userId, groupId, problems, callback);
             break;
-
+            
         case 'deleteGroup':
-            deleteGroup(userId, groupName, callback);
+            deleteGroup(userId, groupId, callback);
             break;
-
+            
         case 'deleteGroupProblems':
-            deleteGroupProblems(userId, groupName, problems, callback);
+            deleteGroupProblems(userId, groupId, problems, callback);
             break;
             
         default:
@@ -116,7 +112,6 @@ function updateProblems(userId, callback) {
     let myData = {};
     //update에 파라미터를 줘서 하려고 했지만 실패했기 때문에
     //임시 방편으로 구현한 것. 차후에 수정해야함.
-    //get에서 그룹 명을 받아오고 그것에서 돌려야 할 듯.
     dynamo.get(params, function(err, data) {
         if (err) {
             console.log("getUser Error", err);
@@ -225,39 +220,6 @@ function updateOrganization(userId, organization, callback) {
     });
 }
 
-function updateSolved(userId, problems, callback) {
-    let v = [];
-    for(let i of problems) {
-        v[problems[i]] = i;
-    }
-    
-    const params = {
-        TableName: 'ACTIVE_USER',
-        Key: {
-            user_id: userId
-        },
-        AttributeUpdates: {
-            "solved_problems": {
-                Action: "ADD",
-                Value: problems
-            }
-        },
-    };
-    
-    dynamo.update(params, function(err, data) {
-        if (err) {
-            console.log("updateSolved Error", err);
-            failResponse.body = JSON.stringify({"message": `updateSolved has an error: ${err}`});
-            callback(null, failResponse);
-            
-        } else {
-            console.log("updateSolved Success", data);
-            response.body = JSON.stringify({"message": "updateSolved is changed"});
-            callback(null, response);
-        }
-    });
-}
-
 //homepage update
 function updateHomepage(userId, homepage, callback) {
     const params = {
@@ -287,38 +249,43 @@ function updateHomepage(userId, homepage, callback) {
     });
 }
 
-//오늘 푼 문제만을 저장한다.
-function updateTodayProblems(userId, todayProblems, callback) {
+//group내에서 랭크 업데이트
+function updateGroupRank(userId, groupId, rank, callback) {
+    if (groupId == "") {
+        failResponse.body = JSON.stringify({"message": "groupid is undefined"});
+        callback(null, failResponse);
+    }
+    
     const params = {
         TableName: 'ACTIVE_USER',
         Key: {
-            user_id: userId
+            user_id: userId,
         },
-        AttributeUpdates: {
-            "today_problems": {
-                Action: "PUT",
-                Value: todayProblems
-            }
-        }
+        UpdateExpression: 'set active_group_set.#k1.#k2 = :v1',
+        ExpressionAttributeNames: {
+            "#k1": groupId,
+            "#k2": "rank"
+        },
+        ExpressionAttributeValues: {":v1": rank}
     };
     
     dynamo.update(params, function(err, data) {
         if (err) {
-            console.log("updateTodayProblems Error", err);
-            failResponse.body = JSON.stringify({"message": `changing todayProblems have an error: ${err}`});
+            console.log("updateGroupRank Error", err);
+            failResponse.body = JSON.stringify({"message": `updateGroupRank has error: ${err}`});
             callback(null, failResponse);
             
         } else {
-            console.log("updateTodayProblems Success", data);
-            response.body = JSON.stringify({"message": "todayProblems are changed"});
+            console.log("updateGroupRank Success", data);
+            response.body = JSON.stringify({"message": "group rank is added"});
             callback(null, response);
         }
     });
 }
 
 //문제를 추가해준다.
-//크롤러에서 항상 기존 푼 문제에 포함되지 않는 문제를 넣어주는 것이 보장된다.
-function addProblems(userId, problems, callback) {
+//크롤러에서 항상 기존에 푼 문제에 포함되지 않는 문제를 넣어주는 것이 보장된다.
+function updateSolved(userId, problems, callback) {
     const params = {
         TableName: 'ACTIVE_USER',
         Key: {
@@ -326,7 +293,7 @@ function addProblems(userId, problems, callback) {
         },
         AttributeUpdates: {
               "solved_problems": {
-                  Action: "ADD",
+                  Action: "PUT",
                   Value: problems,
               }
         },
@@ -357,7 +324,7 @@ function addGroup(userId, groupName , groupId, isMaster, callback) {
     let group = {};
     group["group_auth"] = isMaster;
     group["rank"] = -1;
-    group["group_id"] = groupId;
+    group["group_name"] = groupName;
     
     const params = {
         TableName: 'ACTIVE_USER',
@@ -365,7 +332,7 @@ function addGroup(userId, groupName , groupId, isMaster, callback) {
             user_id: userId,
         },
         UpdateExpression: 'set active_group_set.#k1 = if_not_exists( active_group_set.#k1 , if_not_exists( inactive_group_set.#k1, :v1) ) remove inactive_group_set.#k1',
-        ExpressionAttributeNames: {"#k1": groupName},
+        ExpressionAttributeNames: {"#k1": groupId},
         ExpressionAttributeValues: {":v1": group}
     };
     
@@ -384,7 +351,8 @@ function addGroup(userId, groupName , groupId, isMaster, callback) {
 }
 
 //그룹에 문제를 추가해주는 함수 문제들은 기본적으로 solved: false 상태
-function addGroupProblems(userId, groupName, problems, callback) {
+//그룹에 권한이 있는 사람만 변경할 수 있게 하는 것은 프론트와 상의 해봐야할 듯.
+function addGroupProblems(userId, groupId, problems, callback) {
     const p_form = {
         "due_date": "default",
         "solved": false,
@@ -392,7 +360,7 @@ function addGroupProblems(userId, groupName, problems, callback) {
     };
     
     let updateExpression='set';
-    let expressionAttributeNames={"#k1": groupName};
+    let expressionAttributeNames={"#k1": groupId};
 
     for (const property of problems) {
         updateExpression += ` active_group_set.#k1.#p${property} = if_not_exists( active_group_set.#k1.#p${property}, :v1) ,`;
@@ -425,14 +393,14 @@ function addGroupProblems(userId, groupName, problems, callback) {
 }
 
 //active group set에서 inactive로
-function deleteGroup(userId, groupName, callback) {
+function deleteGroup(userId, groupId, callback) {
     const params = {
         TableName: 'ACTIVE_USER',
         Key: {
             user_id: userId,
         },
         UpdateExpression: 'set inactive_group_set.#k1 = active_group_set.#k1 remove active_group_set.#k1',
-        ExpressionAttributeNames: {"#k1": groupName},
+        ExpressionAttributeNames: {"#k1": groupId},
     };
     
     dynamo.update(params, function(err, data) {
@@ -451,9 +419,9 @@ function deleteGroup(userId, groupName, callback) {
 
 //그룹장의 권한체크는 생각해 봐야할 듯.
 //그룹에서 문제들을 제거
-function deleteGroupProblems(userId, groupName, problems, callback) {
+function deleteGroupProblems(userId, groupId, problems, callback) {
     let updateExpression='remove';
-    let expressionAttributeNames={"#k1": groupName};
+    let expressionAttributeNames={"#k1": groupId};
 
     for (const property of problems) {
         updateExpression += ` active_group_set.#k1.#p${property},`;
