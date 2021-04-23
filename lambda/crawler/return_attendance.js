@@ -11,12 +11,14 @@ const axios = require('axios');
 
 // 변수들
 let attend_probs = []; // 오늘의 출석 문제들, GROUP DB에서 받아와야 함
+let solved_probs = []; // 멤버가 지금까지 푼 모든 문제들을 저장하고 있는 배열
 let members_data; // 해당 그룹 멤버들 정보
 let members_id; // 그룹에 속한 멤버들의 id
 let group_id = 1;  // 이건 front로 부터 받아오기 (event.id)
 let GROUP_ENDPOINT = 'https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB';
 let BOJ_CRAWL_ENDPOINT = `https://vo2gl8s0za.execute-api.us-east-2.amazonaws.com/backend_api/user`;
-
+let check; // 출석 정보
+let update_id; // update할 id
 
 // 그룹 정보 가져오기
 const get_group_info = async() => {
@@ -27,12 +29,7 @@ const get_group_info = async() => {
     members_data = res.data.Item.rank_member;
     members_id = Object.keys(members_data);
     console.log(members_id);
-    // console.log(memebers_id)
-    // memebers_id.forEach((item) => {
-    //   console.log(item);
-    //   console.log(members_data[item].attendance);
-    // })
-    // Check_attend();
+    console.log(attend_probs);
     console.log("get_group_info 함수 끝났음!!");
   })
 }
@@ -41,20 +38,20 @@ const get_group_info = async() => {
 // 그룹 내의 모든 인원들을 반복하며 출석 체크 해야 함
 const Check_attend = async() => {
   members_id.forEach(async(item) => {
-      // console.log(members_data[item].attendance);
-      console.log(item.baj_id);
-      let solved_probs = await get_solved_probs(item.baj_id);
-      console.log(solved_probs);
+      boj_id = members_data[item].boj_id;
+      await get_solved_probs(boj_id);
       console.log("solved_probs 받아왔음!!");
       // 출석 여부 확인
-      let check = "Absent";
-      for(numb in attend_probs){
-        let cnt = 0;
-        if(solved_probs.indexOf(numb) != -1){ cnt++; }
-      }
-      if(cnt == attend_probs.length()) check = "Present";
-      console.log("이제 update_attendance 실행한다!");
-      await Update_Attendance(check, );
+      check = "Absent";
+      let cnt = 0;
+      attend_probs.forEach((item) => {
+        console.log(item);
+        if(solved_probs.indexOf(item) != -1){ cnt++; }
+      })
+      if(cnt == attend_probs.length) check = "Present";
+      console.log(check);
+      update_id = item;
+      console.log("이제 출석 확인 끝남!!");
     })
 }
 
@@ -63,28 +60,21 @@ const get_solved_probs = async(member) => {
   await axios
     .post(BOJ_CRAWL_ENDPOINT, {id : member})
     .then((res) => {
-      console.log(res.data.body);
-    return res.data.body;
+      solved_probs = res.data.body;
   })
 }
 
-// User DB의 Solved_probs 갱신
-// const Update_User_Solved_probs = async() => {
-//   await axios
-//     .patch()
-// }
-
-
 // 해당 유저의 Group DB 내의 출석 여부를 갱신
-const Update_Attendance = async(check, id) => {
+const Update_Attendance = async() => {
   await axios
-    .patch(`${GROUP_ENDPOINT}`, {func : "updateAttendance", id : group_id, name : id, attend : check})
-    .then((res) => { console.log(`Success!!`) })
+    .patch(`${GROUP_ENDPOINT}`, {func : "updateAttendance", id : group_id, name : update_id, attend : check})
+    .then((res) => { console.log(`Success!!`); console.log(update_id, check); })
 }
 
 async function main() {
   await get_group_info();
   await Check_attend();
+  await Update_Attendance();
 }
 
 main();
