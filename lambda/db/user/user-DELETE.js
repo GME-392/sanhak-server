@@ -11,8 +11,23 @@ AWS.config.update({
 
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
-//응답 메시지의 성공 케이스를 선언하고 실패하는 경우 수정해서 응답하면 좋을 듯.
+let response = {
+    "statusCode": 200,
+    "headers": {
+        "DELETE": "success",
+    },
+    "isBase64Encoded": false
+};
 
+let failResponse = {
+    "statusCode": 400,
+    "headers": {
+        "DELETE": "fail",
+    },
+    "isBase64Encoded": false
+};
+
+//응답 메시지의 성공 케이스를 선언하고 실패하는 경우 수정해서 응답하면 좋을 듯.
 exports.handler = (event, context, callback) => {
     let userId = event ? event.userid : "default";
     let userPw = event ? event.userpw : "defalut";
@@ -20,18 +35,65 @@ exports.handler = (event, context, callback) => {
     //id와 pw가 입력되지 않은 경우
     if (userId == "default" || userPw == "default" || userId == "" || userPw == "") {
         console.log("userId, userPw:", userId, userPw);
-        let response = {
-            "statusCode": 400,
-            "headers": {"delete":"fail"},
-            "body": JSON.stringify({"message":"missing content"}),
-            "isBase64Encoded": false
-        };
-        callback(null, response);
+        failResponse.body = JSON.stringify({"message":"missing content"});
+        callback(null, failResponse);
         return;
     }
+    
+    transferUserData(userId, userPw, callback);
+};
 
-    //id가 없거나 pw가 틀리면 실패 메시지를 반환함
-    const params = {
+//userData를 inactive그룹으로 옮김
+function transferUserData(userId, userPw, callback) {
+    let params = {
+        Key: {
+            user_id: userId,
+        },
+        TableName: 'ACTIVE_USER',
+    };
+    let userData;
+    dynamo.get(params, function(err, data) {
+        if (err) {
+            console.log("getUserData Error", err);
+            failResponse.body = JSON.stringify({"message": `getting userid: ${userId} is failed`});
+            callback(null, failResponse);
+        } else {
+            userData = {
+                
+            };
+            
+            params = {
+                TableName: 'INACTIVE_USER',
+                Item: {
+                    "user_id": data.Item.user_id,
+                    "boj_name": data.Item.boj_name,
+                    "user_email": data.Item.user_email,
+                    "active_group_set": data.Item.active_group_set,
+                    "inactive_group_set": data.Item.inactive_group_set,
+                    "user_level": data.Item.user_level,
+                    "user_rank": data.Item.user_rank,
+                    "created_at": `${data.Item.created_at}`,
+                    "user_status": false,
+                    "user_message": `${data.Item.user_message}`,
+                    "organization": `${data.Item.organization}`,
+                    "solved_problems": data.Item.solved_problems,
+                    "homepage": `${data.Item.homepage}`,
+                },
+            };
+            dynamo.put(params, function(err, data) {
+                if (err) {
+                    console.log("Error", err);
+                    failResponse.body = JSON.stringify({"message":"error occured when putting item", "data": userData});
+                    callback(null, failResponse);
+                } else {
+                    console.log("Success", data);
+                    response.body = JSON.stringify({"message": "get, delete, post item success", "data": data});
+                }
+            });
+        }
+    });
+    
+    params = {
         Key: {
             user_id: userId
         },
@@ -47,28 +109,14 @@ exports.handler = (event, context, callback) => {
             }
         },
     };
-    
     dynamo.delete(params, function(err, data) {
         if (err) {
             console.log("Error", err);
-            let failResponse = {
-                "statusCode": 400,
-                "headers": {"delete":"fail"},
-                "body": JSON.stringify({"message":"error occured when deleting item", "error":`${err}`}),
-                "isBase64Encoded": false
-            };
+            failResponse.body = JSON.stringify({"message":"error occured when deleting item", "error":`${err}`});
             callback(null, failResponse);
         } else {
             console.log("Success", data);
-            //성공시에 inactive db로 옮기는 작업이 
-            let responseBody = {"message": "deleting item success"};
-            let response = {
-                "statusCode": 200,
-                "headers": {"delete":"success"},
-                "body": JSON.stringify(responseBody),
-                "isBase64Encoded": false
-            };
             callback(null, response);
         }
     });
-};
+}
