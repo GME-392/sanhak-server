@@ -45,7 +45,9 @@ exports.handler = function(event, context, callback) {
     var prob_num = event.prob_num;
     var goal = event.goal;
     var prob_level = event.prob_level;
-    var group_noti = event.group_noti
+    var group_noti = event.group_noti;
+    var rank_member = event.rank_member;
+
     
 
     switch (func) {
@@ -98,7 +100,7 @@ exports.handler = function(event, context, callback) {
             break;
         
         case 'addRankMember':
-            addRankMember(id, callback);
+            addRankMember(id, rank_member, callback);
             break;
         
         case 'deleteMember':
@@ -106,7 +108,7 @@ exports.handler = function(event, context, callback) {
             break;
         
         case 'deleteRankMember':
-            deleteRankMember(id, callback);
+            deleteRankMember(id, name, callback);
             break;
         
     }
@@ -400,12 +402,50 @@ function addMember(id, new_member, callback){
         }
     });
 }
-function addRankMember(id, callback){
+function addRankMember(id, rank_member, callback){
+    var params = {
+        TableName: 'groupDataBase',
+        Key: {
+            "id": id
+        },
+        UpdateExpression: "SET rank_member = :rank_member",
+        ExpressionAttributeValues: {":rank_member": rank_member}  
+    };
     
+    dynamo.update(params, function(err, data) {
+        if (err) {
+            console.log("Error", err);
+            failResponse.body = JSON.stringify({"message": `has error: ${err}`});
+            callback(null, failResponse);
+        } else {
+            console.log("Success", data);
+            response.body = JSON.stringify(data);
+            callback(null, response);
+        }
+    });
 }
 function deleteMember(id, callback){
     
 }
-function deleteRankMember(id, callback){
+function deleteRankMember(id, name, callback){
+    var params = {
+        TableName: 'groupDataBase',
+        Key: {
+            "id": id
+        },
+        UpdateExpression: "REMOVE rank_member.#name",
+        ExpressionAttributeNames: {"#name": name}  
+    };
     
+    dynamo.update(params, function(err, data) {
+        if (err) {
+            console.log("Error", err);
+            failResponse.body = JSON.stringify({"message": `has error: ${err}`});
+            callback(null, failResponse);
+        } else {
+            console.log("Success", data);
+            response.body = JSON.stringify(data);
+            callback(null, response);
+        }
+    });
 }
