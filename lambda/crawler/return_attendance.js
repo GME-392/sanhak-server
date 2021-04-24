@@ -10,7 +10,6 @@ exports.handler = async (event, context, callback) => {
   let members_id; // 그룹에 속한 멤버들의 id
   let group_id = event.id; // 이건 front로 부터 받아오기 (event.id)
   let GROUP_ENDPOINT = "https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB";
-  let BOJ_CRAWL_ENDPOINT = `https://vo2gl8s0za.execute-api.us-east-2.amazonaws.com/backend_api/user`;
   let USER_ENDPOINT = 'https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/rest-resource';
   let boj_id; // update할 id
 
