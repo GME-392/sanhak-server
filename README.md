@@ -259,6 +259,8 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 
 2. https://4f5hmhskte.execute-api.us-east-2.amazonaws.com/return_diff/
 
+3. https://9zl6kjhghe.execute-api.us-east-2.amazonaws.com/backend_api/return-attendance
+
 **1. 백준에서 지금까지 해결한 모든 문제 반환**
 
 * 메소드 : POST
@@ -287,5 +289,22 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
         "Diamond": "0",
         "Ruby": "0"
     }
+
+**3. 그룹 내 모든 인원들에 대한 출석 체크를 진행 후 DB 갱신**
+
+* 메소드 : POST
+* 요청 본문 : { "id" : "1" }    (group_id를 문자열 형태로)
+* 응답 : null
+
+**API 진행 흐름
+* 1. Front에서 그룹 ID를 받아옴
+* 2. Group DB로부터 출석 문제(attend_probs), 그룹에 속한 멤버들의 정보를 받아옴(members_id)
+* 3. loop를 돌며 그룹 내 각 인원들이 지금까지 해결한 문제(solved_probs)를 받아와 출석 문제와 비교, 출석 체크 진행, DB 갱신
+
+**기존 DB 예시
+![image](https://user-images.githubusercontent.com/65909160/115951003-6c9e2100-a519-11eb-9fff-995f3769793d.png)
+
+**API 실행 후 DB 예시
+![image](https://user-images.githubusercontent.com/65909160/115951007-76278900-a519-11eb-84b3-7d87bff1ca5e.png)
 
 
