@@ -249,6 +249,20 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
  ![image](https://user-images.githubusercontent.com/64597426/115747230-ff32a900-a3cf-11eb-86e1-5c50e9eb7535.png)
 
 
+* addRankMember
+  * 새 그룹원의 랭크 판별을 위한 정보를 업데이트 하는 함수
+  * func와 id를 입력하고, 추가를 원하는 멤버의 이름과 정보들을 맵 형식으로 입력한다
+  * ex) 
+ ![image](https://user-images.githubusercontent.com/64597426/115969549-64290300-a578-11eb-9de0-ce6ad67800d1.png)
+
+
+* deleteRankMember
+  * 탈퇴 그룹원의 정보를 삭제하는 함수
+  * func와 id를 입력하고, 삭제를 원하는 멤버의 이름을 문자열 형식으로 입력한다
+  * ex) 
+ ![image](https://user-images.githubusercontent.com/64597426/115969586-920e4780-a578-11eb-951b-2d6e2b925f66.png)
+
+
 
 
 ## 그룹 기능 관련 REST API 사용법
