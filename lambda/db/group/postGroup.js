@@ -42,7 +42,8 @@ exports.handler = function(event, context, callback) {
             "max_member": event.max_member,
             "tag": event.tag,
             "group_status": null,
-            "group_noti": null
+            "group_noti": null,
+            "group_type": event.group_type
         }
     };
     
