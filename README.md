@@ -330,3 +330,21 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 ![image](https://user-images.githubusercontent.com/65909160/115951007-76278900-a519-11eb-84b3-7d87bff1ca5e.png)
 
 
+
+**4. 그룹 내 모든 인원들에 대하여 해당 인원들이 출석 문제 중 어떤 문제를 풀었는지 반환하는 API**
+
+* endpoint : https://hhya7n2t06.execute-api.us-east-2.amazonaws.com/backend_api/return-solved-attend-probs
+* 메소드 : POST
+* 요청 본문 : { "id" : "1" }    (group_id를 문자열 형태로)
+* 응답 : 
+{
+    "statusCode": 200,
+    "body": {
+        "c17an": [ "1000", "1001", "1003"],
+        "suhwanc": ["1000", "1001", "1002", "1003"],
+        "kimtaehyun98": ["1000", "1001", "1002", "1003"]
+    }
+}
+
+
+
