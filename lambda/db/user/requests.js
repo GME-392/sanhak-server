@@ -27,21 +27,45 @@ request.get(options, (error, response, body) => {
 //     json: true
 // };
 
-const options = {  
-    uri: "https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/first",
-    headers: {"x-api-key" :"vUJiHfh1OrapaFbbDY9xabWdR9FycrVpiroebh00"},
-    method: "POST",
+// request.post(options, (error, response, body) => {
+//     console.log('get error:', error);
+//     console.log('get statusCode:', response && response.statusCode); 
+//     console.log('body:', body);
+// });
+
+//테스트용
+const options = {
+    uri: "https://m72biz7595.execute-api.ap-northeast-2.amazonaws.com/test/test2",
+    method: "PATCH",
+    headers: {myauth: "allow"},
     body: {
-        id: "testid2",
-        name: "123aaa123",
-        leader: "kkkkk",
-        numberOfMember: "10"
+        userid: "t1",
+        funcname: "updateSolved",
+        problems: ['1000','100','1002','3']
     },
     json: true
 };
 
-request.post(options, (error, response, body) => {
+request.patch(options, (error, response, body) => {
     console.log('get error:', error);
-    console.log('get statusCode:', response && response.statusCode); 
+    console.log('get statusCode:', response && response.statusCode);
+    //console.log("reponse:", response);
     console.log('body:', body);
 });
+
+// const options = {
+//     uri: "https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/rest-resource",
+//     method: "PATCH",
+//     body: {
+//         userid: "t1",
+//         funcname: "updateSolved",
+//         problems: ['1000','100','1002','1006']
+//     },
+//     json: true
+// };
+
+// request.patch(options, (error, response, body) => {
+//     console.log('get error:', error);
+//     console.log('get statusCode:', response && response.statusCode); 
+//     console.log('body:', body);
+// });
