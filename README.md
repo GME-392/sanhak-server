@@ -4,7 +4,10 @@
 
 ## userDB REST API 사용법
 **endpoint**
-https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/rest-resourceCancel changes
+https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/rest-resource
+
+header에 "myauth": "allow" 값을 넣어야 endpoint사용가능
+> 4월27일 이후 get부터 적용예정
 
 
 **GET**
