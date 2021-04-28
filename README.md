@@ -253,10 +253,10 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 
 
 * updateProblems
-  * 출석 문제를 업데이트 하는 함수
-  * func와 id를 입력하고, 변경을 원하는 출석문제를 배열 형식으로 입력한다
+  * 출석관련 문제를 업데이트 하는 함수
+  * func와 id를 입력하고, 변경을 원하는 문제들을 배열 형식으로 입력한다
   * ex) 
- ![image](https://user-images.githubusercontent.com/64597426/115739883-45383e80-a3c9-11eb-8c43-de545e5eed7e.png)
+ ![image](https://user-images.githubusercontent.com/64597426/116369862-cf0e5e80-a844-11eb-89b4-ce2af73b2fa8.png)
 
 
 * addRankMember
