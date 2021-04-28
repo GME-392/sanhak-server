@@ -9,6 +9,7 @@ exports.handler = async (event) => {
   let members_data, members_id;
   let rank_points = [];
   let probs_diff;
+  let attend_cycle = 1; // 나중에 attend_cycle에 대한 정보도 그룹DB에서 받아올 예정
   // 먼저 그룹 내의 모든 인원들에 대한 정보를 받아온다.
   // 필요한 정보 : 멤버 id, 각 멤버별 attend_date(누적 출석일수), 누적 점수(score), attend_cycle(출석 갱신일)
   
@@ -22,8 +23,7 @@ exports.handler = async (event) => {
         members_id = Object.keys(members_data);
         for(let id of members_id){
           let attend_date = members_data[id].attend_date;
-          let score = members_data[id].score;
-          let temp = { id : id, score : (attend_date + score)}; // 나중에 attend_cycle 받아와서 attend_data에 곱해주기
+          let temp = { id : id, score : (attend_date*attend_cycle)}; // 나중에 attend_cycle 받아와서 attend_data에 곱해주기
           rank_points.push(temp);
         }
       });
