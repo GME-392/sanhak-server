@@ -203,7 +203,7 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
  ![image](https://user-images.githubusercontent.com/64597426/115739626-0b673800-a3c9-11eb-92f1-95d159cfeef8.png)
 
 
-* updateAttendanceProblems
+* ★updateAttendanceProblems
   * 출석확인 문제를 업데이트 하는 함수
   * func와 id를 입력하고, 변경을 원하는 출석문제를 배열 형식으로 입력한다
   * ex) 
@@ -252,7 +252,7 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
  ![image](https://user-images.githubusercontent.com/64597426/115747230-ff32a900-a3cf-11eb-86e1-5c50e9eb7535.png)
 
 
-* updateProblems
+* ★updateProblems
   * 출석관련 문제를 업데이트 하는 함수
   * func와 id를 입력하고, 변경을 원하는 문제들을 배열 형식으로 입력한다
   * ex) 
