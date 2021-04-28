@@ -350,4 +350,11 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 }
 
 
+**5. 그룹 내 모든 인원들에 대하여 랭킹 점수를 정렬된 형태로 반환하는 API**
+
+* endpoint : https://ycwvl0727g.execute-api.us-east-2.amazonaws.com/backend_api/return-rank
+* 메소드 : POST
+* 요청 본문 : { "id" : "1" }  (group_id를 문자열 형태로)
+* 응답 : ![image](https://user-images.githubusercontent.com/65909160/116351368-8350ba80-a82e-11eb-9514-29a4245ecca6.png)
+* 설명 : 그룹 내 모든 인원 정보 받아오기 -> 각 인원별 랭킹 점수 계산 -> 정렬 -> 랭킹 점수를 group_DB에 갱신 -> 랭킹 점수 반환
 
