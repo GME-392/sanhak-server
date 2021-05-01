@@ -95,11 +95,7 @@ exports.handler = function(event, context, callback) {
             break;
         
         case 'deleteMember':
-            deleteMember(id, left_member, callback);
-            break;
-        
-        case 'deleteRankMember':
-            deleteRankMember(id, name, callback);
+            deleteMember(id, name, callback);
             break;
         
     }
