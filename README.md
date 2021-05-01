@@ -168,13 +168,6 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 
 * func, id의 값이 무조건 들어가야하며, 업데이트를 원하는 요소에 따라 각 수정값을 입력한다.
 
-* addMember
-  * 그룹원 추가 함수
-  * func와 id를 입력하고, 추가를 원하는 그룹원을 배열의 형식으로 추가한다.
-  * ex) 
-  ![image](https://user-images.githubusercontent.com/64597426/115735897-cbeb1c80-a3c5-11eb-81dd-b278db43c497.png)
-
- 
 * updateCycle
   * 출석체크 주기를 업데이트하는 함수
   * func와 id를 입력하고, 변경을 원하는 cycle을 문자열의 형식으로 입력한다
@@ -189,13 +182,6 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
  ![image](https://user-images.githubusercontent.com/64597426/115738224-d3abc080-a3c7-11eb-8153-745d781733dd.png)
 
 
-* updateNumberMember
-  * 그룹원의 인원을 변경하는 함수
-  * func와 id를 입력하고, 변경을 원하는 그룹원 수를 숫자 형식으로 입력한다
-  * ex) 
- ![image](https://user-images.githubusercontent.com/64597426/115739107-98f65800-a3c8-11eb-92ec-c8160af05849.png)
-
-
 * updateAttendance
   * 출석여부를 업데이트 하는 함수
   * func와 id를 입력하고, 변경을 원하는 그룹원의 이름과 출석여부를 문자열 형식으로 입력한다
@@ -203,7 +189,7 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
  ![image](https://user-images.githubusercontent.com/64597426/115739626-0b673800-a3c9-11eb-92f1-95d159cfeef8.png)
 
 
-* ★updateAttendanceProblems
+* updateAttendanceProblems
   * 출석확인 문제를 업데이트 하는 함수
   * func와 id를 입력하고, 변경을 원하는 출석문제를 배열 형식으로 입력한다
   * ex) 
@@ -238,13 +224,6 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
  ![image](https://user-images.githubusercontent.com/64597426/115746419-4b311e00-a3cf-11eb-8a6a-babc6d28ec02.png)
 
 
-* updatePersonalRank
-  * 멤버의 그룹 내 랭크를 업데이트 하는 함수
-  * func와 id를 입력하고, 변경을 원하는 멤버의 이름과 그룹 내의 랭크를 각각 문자열과 숫자 형식으로 입력한다
-  * ex) 
- ![image](https://user-images.githubusercontent.com/64597426/115746878-ae22b500-a3cf-11eb-9d24-3fa160ebbbff.png)
-
-
 * updatePersonalScore
   * 랭크 판별을 위한 멤버 개인의 점수를 업데이트 하는 함수
   * func와 id를 입력하고, 변경을 원하는 멤버의 이름과 점수를 각각 문자열과 숫자 형식으로 입력한다
@@ -252,25 +231,25 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
  ![image](https://user-images.githubusercontent.com/64597426/115747230-ff32a900-a3cf-11eb-86e1-5c50e9eb7535.png)
 
 
-* ★updateProblems
+* updateProblems
   * 출석관련 문제를 업데이트 하는 함수
   * func와 id를 입력하고, 변경을 원하는 문제들을 배열 형식으로 입력한다
   * ex) 
  ![image](https://user-images.githubusercontent.com/64597426/116369862-cf0e5e80-a844-11eb-89b4-ce2af73b2fa8.png)
 
 
-* addRankMember
+* addMember
   * 새 그룹원의 랭크 판별을 위한 정보를 업데이트 하는 함수
   * func와 id를 입력하고, 추가를 원하는 멤버의 이름과 정보들을 맵 형식으로 입력한다
   * ex) 
- ![image](https://user-images.githubusercontent.com/64597426/115969549-64290300-a578-11eb-9de0-ce6ad67800d1.png)
+ ![image](https://user-images.githubusercontent.com/64597426/116779295-6e835980-aab0-11eb-9d7c-75ab8de7c685.png)
 
 
-* deleteRankMember
+* deleteMember
   * 탈퇴 그룹원의 정보를 삭제하는 함수
   * func와 id를 입력하고, 삭제를 원하는 멤버의 이름을 문자열 형식으로 입력한다
   * ex) 
- ![image](https://user-images.githubusercontent.com/64597426/115969586-920e4780-a578-11eb-951b-2d6e2b925f66.png)
+ ![image](https://user-images.githubusercontent.com/64597426/116779345-d0dc5a00-aab0-11eb-898b-a5c6db3d6c95.png)
 
 
 
