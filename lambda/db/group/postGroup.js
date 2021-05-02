@@ -33,7 +33,7 @@ exports.handler = function(event, context, callback) {
             "id": event.id,
             "leader": event.leader,
             "name": event.name,
-            "group_member": ,
+            "group_member": event.group_member,
             "rank_group": null,
             "group_goal": {},
             "group_attendance": {"attendance_cycle": 7,"probs":[]},
