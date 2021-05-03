@@ -28,26 +28,25 @@ var failResponse = {
 
 
 exports.handler = function(event, context, callback) {
-    var func = event.func;
     var id = event.id;
     var probs = event.probs;
     var rank_Group = event.rank_Group;
     var attendance = event.attendance;
-    var cycle =  event.cycle;
+    var cycle = event.cycle;
     var number_member = event.number_member;
     var new_member = event.new_member;
     var name = event.name;
+    var rank_inGroup = event.rank_inGroup;
     var score = event.score;
     var prob_num = event.prob_num;
     var goal = event.goal;
     var prob_level = event.prob_level;
     var group_noti = event.group_noti;
-    var left_member = event.left_member;
-    var problems = event.problems;
+    var rank_member = event.rank_member;
 
     switch (func) {
-        case 'updateAttendanceProblems':
-            updateAttendanceProblems(id, probs, callback);
+        case 'updateProblems':
+            updateProblems(id, probs, callback);
             break;
         
         case 'updateCycle':
@@ -61,15 +60,11 @@ exports.handler = function(event, context, callback) {
         case 'updateProblemNumber':
             updateProblemNumber(id, prob_num, callback);
             break;
-       
-        case 'updateNumberMember':
-            updateNumberMember(id, number_member, callback);
-            break;
-       
+    
         case 'updateGroupRank':
             updateGroupRank(id, rank_Group, callback);
             break;
-       
+    
         case 'updateGroupNotice':
             updateGroupNotice(id, group_noti, callback);
             break;
@@ -85,19 +80,22 @@ exports.handler = function(event, context, callback) {
         case 'updateProblemLevel':
             updateProblemLevel(id, prob_level, callback);
             break;
-            
-        case 'updateProblems':
-            updateProblems(id, problems, callback);
-            break;
         
         case 'addMember':
             addMember(id, new_member, callback);
             break;
         
-        case 'deleteMember':
-            deleteMember(id, name, callback);
+        case 'addRankMember':
+            addRankMember(id, rank_member, callback);
             break;
         
+        case 'deleteMember':
+            deleteMember(id, callback);
+            break;
+        
+        case 'deleteRankMember':
+            deleteRankMember(id, name, callback);
+            break;
     }
 }
 
@@ -339,10 +337,13 @@ function addMember(id, new_member, callback){
         Key: {
             "id": id
         },
-        UpdateExpression: "SET group_member = :new_member",
-        ExpressionAttributeValues: {":new_member": new_member}  
+        AttributeUpdates: {
+            "member": {
+                "Action": "ADD",
+                "Value": new_member
+            }
+        }
     };
-    
     dynamo.update(params, function(err, data) {
         if (err) {
             console.log("Error", err);
@@ -355,16 +356,41 @@ function addMember(id, new_member, callback){
         }
     });
 }
-function deleteMember(id, name, callback){
+function addRankMember(id, rank_member, callback){
     var params = {
         TableName: 'groupDataBase',
         Key: {
             "id": id
         },
-        UpdateExpression: "REMOVE group_member.#name",
-        ExpressionAttributeNames: {"#name": name}  
+        UpdateExpression: "SET rank_member = :rank_member",
+        ExpressionAttributeValues: {":rank_member": rank_member}
     };
-    
+
+    dynamo.update(params, function(err, data) {
+        if (err) {
+            console.log("Error", err);
+            failResponse.body = JSON.stringify({"message": `has error: ${err}`});
+            callback(null, failResponse);
+        } else {
+            console.log("Success", data);
+            response.body = JSON.stringify(data);
+            callback(null, response);
+        }
+    });
+}
+function deleteMember(id, callback){
+
+}
+function deleteRankMember(id, name, callback){
+    var params = {
+        TableName: 'groupDataBase',
+        Key: {
+            "id": id
+        },
+        UpdateExpression: "REMOVE rank_member.#name",
+        ExpressionAttributeNames: {"#name": name}
+    };
+
     dynamo.update(params, function(err, data) {
         if (err) {
             console.log("Error", err);
