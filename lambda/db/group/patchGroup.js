@@ -28,6 +28,7 @@ var failResponse = {
 
 
 exports.handler = function(event, context, callback) {
+    var func = event.func;
     var id = event.id;
     var probs = event.probs;
     var rank_Group = event.rank_Group;
@@ -43,6 +44,7 @@ exports.handler = function(event, context, callback) {
     var prob_level = event.prob_level;
     var group_noti = event.group_noti;
     var rank_member = event.rank_member;
+    var point = event.point;
 
     switch (func) {
         case 'updateProblems':
@@ -79,6 +81,10 @@ exports.handler = function(event, context, callback) {
         
         case 'updateProblemLevel':
             updateProblemLevel(id, prob_level, callback);
+            break;
+        
+        case 'updateGroupPoint':
+            updateGroupPoint(id, point, callback);
             break;
         
         case 'addMember':
@@ -325,6 +331,32 @@ function updateProblems(id, problems, callback){
             failResponse.body = JSON.stringify({"message": `has error: ${err}`});
             callback(null, failResponse);
         } else {
+            console.log("Success", data);
+            response.body = JSON.stringify(data);
+            callback(null, response);
+        }
+    });
+}
+function updateGroupPoint(id, point, callback){
+    var params = {
+        TableName: 'groupDataBase',
+        Key: {
+            "id": id
+        },
+        AttributeUpdates: {
+            "group_point": {
+                "Action": "PUT",
+                "Value": point
+            }
+        }            
+    };
+    dynamo.update(params, function(err, data) {
+        if (err) {
+            console.log("Error", err);
+            failResponse.body = JSON.stringify({"message": `has error: ${err}`});
+            callback(null, failResponse);
+        } 
+        else {
             console.log("Success", data);
             response.body = JSON.stringify(data);
             callback(null, response);
