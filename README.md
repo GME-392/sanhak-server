@@ -362,3 +362,11 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 * goal = 그룹 목표. 코딩 테스트 = test, 대회 = contest, 학습 = study로 주면 됨
 * 응답 : DB 갱신
 
+**7. 문제 추천 API**
+
+* endpoint : https://g9eq7bmlgl.execute-api.us-east-2.amazonaws.com/backend_api/recommendProbs
+* 메소드 : POST
+* 요청 본문 : { "id" : "1" }
+* 반드시 그룹DB 내에 문제집(problems)이 있어야 함. 자동으로 출석 문제 수 만큼 추천 후 DB 갱신
+* 응답 : ![image](https://user-images.githubusercontent.com/65909160/117018329-5b31f180-ad2f-11eb-859a-4d5666ab72a5.png)
+
