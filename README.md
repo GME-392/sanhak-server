@@ -238,6 +238,13 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
  ![image](https://user-images.githubusercontent.com/64597426/116369862-cf0e5e80-a844-11eb-89b4-ce2af73b2fa8.png)
 
 
+* updateGroupPoint
+  * 그룹의 랭킹계산을 위한 point를 업데이트 하는 함수
+  * func와 id를 입력하고, 변경을 원하는 그룹의 point를 숫자 형식으로 입력한다
+  * ex) 
+ ![image](https://user-images.githubusercontent.com/64597426/116988506-712dbb00-ad0b-11eb-9f4d-080bb02b4232.png)
+
+
 * addMember
   * 새 그룹원을 업데이트 하는 함수
   * func와 id를 입력하고, 추가를 원하는 멤버의 이름을 문자열 형식으로 입력한다
