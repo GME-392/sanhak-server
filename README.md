@@ -351,3 +351,14 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 * 응답 : ![image](https://user-images.githubusercontent.com/65909160/116351368-8350ba80-a82e-11eb-9514-29a4245ecca6.png)
 * 설명 : 그룹 내 모든 인원 정보 받아오기 -> 각 인원별 랭킹 점수 계산 -> 정렬 -> 랭킹 점수를 group_DB에 갱신 -> 랭킹 점수 반환
 
+
+**6. 그룹 목표와 관련된 문제집 크롤링 해서 그룹 DB에 넣어주는 API**
+
+* endpoint : https://pj6kuuwo4e.execute-api.us-east-2.amazonaws.com/backend_api/getProblemSet
+* 메소드 : POST
+* 요청 본문 : { "id" : "1", "diff" : "top", "arr" : ["samsung"], "goal" : "test" }
+* diff = 그룹장이 선택한 난이도(기본값으로 아무거나 주기, 그룹 목표가 학습(study)라면 해당하는 난이도는 상(top), 중(mid), 하(bottom)으로 주면 됨
+* arr = 그룹 세부 태그들 (예를 들어 코테가 그룹 목표면 삼성(samsung), 또는 카카오(kakao)이고 학습이면 bfsdfs, bruteforce 등
+* goal = 그룹 목표. 코딩 테스트 = test, 대회 = contest, 학습 = study로 주면 됨
+* 응답 : DB 갱신
+
