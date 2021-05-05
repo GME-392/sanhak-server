@@ -354,7 +354,7 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 
 **6. 그룹 목표와 관련된 문제집 크롤링 해서 그룹 DB에 넣어주는 API**
 
-* endpoint : https://pj6kuuwo4e.execute-api.us-east-2.amazonaws.com/backend_api/getProblemSet
+* endpoint : https://pj6kuuwo4e.execute-api.us-east-2.amazonaws.com/backend_api/getproblemset
 * 메소드 : POST
 * 요청 본문 : { "id" : "1", "diff" : "top", "arr" : ["samsung"], "goal" : "test" }
 * diff = 그룹장이 선택한 난이도(기본값으로 아무거나 주기, 그룹 목표가 학습(study)라면 해당하는 난이도는 상(top), 중(mid), 하(bottom)으로 주면 됨
@@ -364,9 +364,14 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 
 **7. 문제 추천 API**
 
-* endpoint : https://g9eq7bmlgl.execute-api.us-east-2.amazonaws.com/backend_api/recommendProbs
+* endpoint : https://g9eq7bmlgl.execute-api.us-east-2.amazonaws.com/backend_api/recommendprobs
 * 메소드 : POST
 * 요청 본문 : { "id" : "1" }
 * 반드시 그룹DB 내에 문제집(problems)이 있어야 함. 자동으로 출석 문제 수 만큼 추천 후 DB 갱신
 * 응답 : ![image](https://user-images.githubusercontent.com/65909160/117018329-5b31f180-ad2f-11eb-859a-4d5666ab72a5.png)
 
+**8. 그룹 간 랭킹 산출 API**
+
+* endpoint : https://rg4a7gp98g.execute-api.us-east-2.amazonaws.com/backend_api/getgrouprank
+* 메소드 : GET
+* 응답 : 각 그룹의 4가지 정보(그룹 이름, 목표, 인원수, point)를 가지고 있는 객체 배열을 point 순으로 정렬해서 반환.  (프론트에서 요구시 쉽게 추가 가능)
