@@ -30,6 +30,7 @@ exports.handler = function(event, context, callback) {
     var params = {
         TableName: "noticeDB",
         Item: {
+            "id": event.id,
             "infoName": event.infoName,
             "date": event.date,
             "link": event.link
