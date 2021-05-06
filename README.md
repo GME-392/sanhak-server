@@ -398,7 +398,7 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 ## groupDB 구조
 
 **전체 DB**
-![image](https://user-images.githubusercontent.com/64597426/117315705-e42d6200-aec2-11eb-8263-2cc14de79294.png)
+![image](https://user-images.githubusercontent.com/64597426/117318695-a0882780-aec5-11eb-8e9f-4c451890a95b.png)
 
 
 ## groupDB REST API 사용법
