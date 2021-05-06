@@ -1,5 +1,5 @@
 var AWS = require('aws-sdk');
-// Set the region 
+// Set the region
 AWS.config.update({
     region: 'ap-northeast-2',
     endpoint: "http://dynamodb.ap-northeast-2.amazonaws.com"
@@ -26,7 +26,6 @@ var failResponse = {
     "isBase64Encoded": false
 };
 
-
 exports.handler = function(event, context, callback) {
     var func = event.func;
     var id = event.id;
@@ -45,10 +44,16 @@ exports.handler = function(event, context, callback) {
     var group_noti = event.group_noti;
     var rank_member = event.rank_member;
     var point = event.point;
+    var problems = event.problems;
+    var attend_date = event.attend_date;
 
     switch (func) {
+        case 'updateAttendanceProblems':
+            updateAttendanceProblems(id, probs, callback);
+            break;
+            
         case 'updateProblems':
-            updateProblems(id, probs, callback);
+            updateProblems(id, problems, callback);
             break;
         
         case 'updateCycle':
@@ -73,7 +78,11 @@ exports.handler = function(event, context, callback) {
         
         case 'updateAttendance':
             updateAttendance(id, name, attendance, callback);
-            break;
+            break; 
+        
+        case 'updateAttendDate':
+            updateAttendDate(id, name, attend_date, callback);
+            break; 
         
         case 'updatePersonalScore':
             updatePersonalScore(id, name, score, callback);
@@ -105,6 +114,7 @@ exports.handler = function(event, context, callback) {
     }
 }
 
+
 function updateAttendanceProblems(id, probs, callback){
     var params = {
         TableName: 'groupDataBase',
@@ -119,7 +129,30 @@ function updateAttendanceProblems(id, probs, callback){
             console.log("Error", err);
             failResponse.body = JSON.stringify({"message": `has error: ${err}`});
             callback(null, failResponse);
-        } else {
+        } 
+        else {
+            console.log("Success", data);
+            response.body = JSON.stringify(data);
+            callback(null, response);
+        }
+    });
+}
+function updateProblems(id, problems, callback){
+    var params = {
+        TableName: 'groupDataBase',
+        Key: {
+            "id": id
+        },
+        UpdateExpression: "SET problems = :problems",
+        ExpressionAttributeValues: {":problems": problems}
+    };
+    dynamo.update(params, function(err, data) {
+        if (err) {
+            console.log("Error", err);
+            failResponse.body = JSON.stringify({"message": `has error: ${err}`});
+            callback(null, failResponse);
+        } 
+        else {
             console.log("Success", data);
             response.body = JSON.stringify(data);
             callback(null, response);
@@ -131,10 +164,9 @@ function updateCycle(id, cycle, callback){
         TableName: 'groupDataBase',
         Key: {
             "id": id
-        },
+    },
         UpdateExpression: "SET group_attendance.attendance_cycle = :cycle",
         ExpressionAttributeValues: {":cycle": cycle}
-            
     };
     dynamo.update(params, function(err, data) {
         if (err) {
@@ -148,6 +180,7 @@ function updateCycle(id, cycle, callback){
         }
     });
 }
+
 function updateProblemNumber(id, prob_num, callback){
     var params = {
         TableName: 'groupDataBase',
@@ -156,7 +189,7 @@ function updateProblemNumber(id, prob_num, callback){
         },
         UpdateExpression: "SET group_goal.prob_num = :prob_num",
         ExpressionAttributeValues: {":prob_num": prob_num}
-            
+
     };
     dynamo.update(params, function(err, data) {
         if (err) {
@@ -170,6 +203,7 @@ function updateProblemNumber(id, prob_num, callback){
         }
     });
 }
+
 function updateGroupGoal(id, goal, callback){
     var params = {
         TableName: 'groupDataBase',
@@ -178,7 +212,7 @@ function updateGroupGoal(id, goal, callback){
         },
         UpdateExpression: "SET group_goal.goal = :goal",
         ExpressionAttributeValues: {":goal": goal}
-            
+
     };
     dynamo.update(params, function(err, data) {
         if (err) {
@@ -192,6 +226,7 @@ function updateGroupGoal(id, goal, callback){
         }
     });
 }
+
 function updateProblemLevel(id, prob_level, callback){
     var params = {
         TableName: 'groupDataBase',
@@ -200,7 +235,7 @@ function updateProblemLevel(id, prob_level, callback){
         },
         UpdateExpression: "SET group_goal.prob_level = :prob_level",
         ExpressionAttributeValues: {":prob_level": prob_level}
-            
+
     };
     dynamo.update(params, function(err, data) {
         if (err) {
@@ -225,22 +260,22 @@ function updateGroupRank(id, rank_Group, callback){
                 "Action": "PUT",
                 "Value": rank_Group
             }
-
-        }
-            
+        }            
     };
     dynamo.update(params, function(err, data) {
         if (err) {
             console.log("Error", err);
             failResponse.body = JSON.stringify({"message": `has error: ${err}`});
             callback(null, failResponse);
-        } else {
+        } 
+        else {
             console.log("Success", data);
             response.body = JSON.stringify(data);
             callback(null, response);
         }
     });
 }
+
 function updateGroupNotice(id, group_noti, callback){
     var params = {
         TableName: 'groupDataBase',
@@ -252,9 +287,7 @@ function updateGroupNotice(id, group_noti, callback){
                 "Action": "PUT",
                 "Value": group_noti
             }
-
-        }
-            
+        }            
     };
     dynamo.update(params, function(err, data) {
         if (err) {
@@ -268,18 +301,17 @@ function updateGroupNotice(id, group_noti, callback){
         }
     });
 }
+
 function updateAttendance(id, name, attendance, callback){
     var params = {
         TableName: 'groupDataBase',
         Key: {
             "id": id
         },
-        UpdateExpression: "SET group_member.#name.attendance = :attendance",
+        UpdateExpression: "SET rank_member.#name.attendance = :attendance",
         ExpressionAttributeNames: {"#name": name},
         ExpressionAttributeValues: {":attendance": attendance}
-            
     };
-    
     dynamo.update(params, function(err, data) {
         if (err) {
             console.log("Error", err);
@@ -292,39 +324,40 @@ function updateAttendance(id, name, attendance, callback){
         }
     });
 }
+function updateAttendDate(id, name, attend_date, callback){
+    var params = {
+        TableName: 'groupDataBase',
+        Key: {
+            "id": id
+        },
+        UpdateExpression: "SET rank_member.#name.attend_date = :attend_date",
+        ExpressionAttributeNames: {"#name": name},
+        ExpressionAttributeValues: {":attend_date": attend_date}
+    };
+    dynamo.update(params, function(err, data) {
+        if (err) {
+            console.log("Error", err);
+            failResponse.body = JSON.stringify({"message": `has error: ${err}`});
+            callback(null, failResponse);
+        } else {
+            console.log("Success", data);
+            response.body = JSON.stringify(data);
+            callback(null, response);
+        }
+    });
+}
+
 function updatePersonalScore(id, name, score, callback){
     var params = {
         TableName: 'groupDataBase',
         Key: {
             "id": id
         },
-        UpdateExpression: "SET group_member.#name.score = :score",
+        UpdateExpression: "SET rank_member.#name.score = :score",
         ExpressionAttributeNames: {"#name": name},
         ExpressionAttributeValues: {":score": score}
-            
     };
-    
-    dynamo.update(params, function(err, data) {
-        if (err) {
-            console.log("Error", err);
-            failResponse.body = JSON.stringify({"message": `has error: ${err}`});
-            callback(null, failResponse);
-        } else {
-            console.log("Success", data);
-            response.body = JSON.stringify(data);
-            callback(null, response);
-        }
-    });
-}
-function updateProblems(id, problems, callback){
-   var params = {
-        TableName: 'groupDataBase',
-        Key: {
-            "id": id
-        },
-        UpdateExpression: "SET problems = :problems",
-        ExpressionAttributeValues: {":problems": problems}
-    };
+
     dynamo.update(params, function(err, data) {
         if (err) {
             console.log("Error", err);
