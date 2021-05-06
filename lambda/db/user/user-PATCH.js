@@ -43,7 +43,7 @@ exports.handler = (event, context, callback) => {
     let organization = event.organization ? event.organization : "";
     let homepage = event.homepage ? event.homepage : "";
     let isMaster = event.ismaster ? event.ismaster : false;
-    let emailAccept = event.emailaccept ? event.emailAccept : false;
+    let emailAccept = event.emailaccept ? event.emailaccept : false;
      
     if (userId == "default" || userId == "" || funcName == "default" || funcName == "") {
         failResponse.body = JSON.stringify({"message":"missing content"});
