@@ -43,6 +43,7 @@ exports.handler = (event, context, callback) => {
     let organization = event.organization ? event.organization : "";
     let homepage = event.homepage ? event.homepage : "";
     let isMaster = event.ismaster ? event.ismaster : false;
+    let emailAccept = event.emailaccept ? event.emailAccept : false;
      
     if (userId == "default" || userId == "" || funcName == "default" || funcName == "") {
         failResponse.body = JSON.stringify({"message":"missing content"});
@@ -73,6 +74,10 @@ exports.handler = (event, context, callback) => {
         
         case 'updateSolved':
             updateSolved(userId, problems, callback);
+            break;
+
+        case 'updateEmailAccept':
+            updateEmailAccept(userId, emailAccept, callback);
             break;
             
         case 'addGroup':
@@ -308,6 +313,35 @@ function updateSolved(userId, problems, callback) {
         } else {
             console.log("addProblem Success", data);
             response.body = JSON.stringify({"message": "problem is added"});
+            callback(null, response);
+        }
+    });
+}
+
+//email_accept항목 수정
+function updateEmailAccept(userId, emailAccept, callback) {
+    const params = {
+        TableName: 'ACTIVE_USER',
+        Key: {
+            user_id: userId
+        },
+        AttributeUpdates: {
+            "email_accept": {
+                Action: "PUT",
+                Value: emailAccept
+            }
+        }
+    };
+    
+    dynamo.update(params, function(err, data) {
+        if (err) {
+            console.log("updateEmailAccept Error", err);
+            failResponse.body = JSON.stringify({"message": `changing email_accept has an error: ${err}`});
+            callback(null, failResponse);
+            
+        } else {
+            console.log("updateEmailAccept Success", data);
+            response.body = JSON.stringify({"message": "email_accept is changed"});
             callback(null, response);
         }
     });
