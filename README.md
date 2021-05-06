@@ -136,25 +136,20 @@ header에 "myauth": "allow" 값을 넣어야 endpoint사용가능
 
 ## groupDB 구조
 
-**전체 구조**
-
-![db](https://user-images.githubusercontent.com/64597426/115429463-63256800-a23e-11eb-9143-5d38f3e05977.jpg)
-
 
 **rank_member**
 
-![rank_member](https://user-images.githubusercontent.com/64597426/115429531-75070b00-a23e-11eb-8076-71ed2f05cead.jpg)
+![image](https://user-images.githubusercontent.com/64597426/117314690-f8249400-aec1-11eb-86ce-1c690f0c4354.png)
 
 
 **group_attendance**
 
-![group_attendance](https://user-images.githubusercontent.com/64597426/115429562-7b958280-a23e-11eb-93d2-ad0346ee3dfa.jpg)
-
+![image](https://user-images.githubusercontent.com/64597426/117314784-0e325480-aec2-11eb-944f-ba2044e099cc.png)
 
 
 **group_goal**
 
-![group_goal](https://user-images.githubusercontent.com/64597426/115429607-85b78100-a23e-11eb-9e32-404531d6680a.jpg)
+![image](https://user-images.githubusercontent.com/64597426/117314885-273b0580-aec2-11eb-8ee3-524cf4d69b35.png)
 
 
 
@@ -398,3 +393,41 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 * endpoint : https://rg4a7gp98g.execute-api.us-east-2.amazonaws.com/backend_api/getgrouprank
 * 메소드 : GET
 * 응답 : 각 그룹의 4가지 정보(그룹 이름, 목표, 인원수, point)를 가지고 있는 객체 배열을 point 순으로 정렬해서 반환.  (프론트에서 요구시 쉽게 추가 가능)
+
+
+## groupDB 구조
+
+**전체 DB**
+![image](https://user-images.githubusercontent.com/64597426/117315705-e42d6200-aec2-11eb-8263-2cc14de79294.png)
+
+
+## groupDB REST API 사용법
+
+**endpoint**
+
+https://tdwcyrlp8g.execute-api.ap-northeast-2.amazonaws.com/noticeDB
+
+**get**
+
+* 기본적으로 'id('id=')&getNotice' 두가지의 값 혹은 'getAllNotice'을 쿼리에 같이 줘야한다.
+
+* getNotice
+  * id를 입력하여 noticeDB(func)의 테이블에 속해 있는 데이터를 모두 불러온다.
+  * 'id=(id 입력)&func=getGroup'을 쿼리문자열에 입력한다.
+
+* getAllNotice
+  * DB의 모든 데이터들을 한번에 불러온다
+  * 'func=getAllNotice'을 쿼리문자열에 입력한다.
+
+
+**post**
+
+* 요청 본문에 id, infoName(대회정보), date(대회 날짜), link(웹사이트 링크) 등의 데이터를 입력하면 DB에 테이블이 생성된다.
+
+**delete**
+
+* 요청 본문에 id 입력 시 DB에서 해당 테이블 삭제
+
+**patch**
+
+* func, id의 값이 무조건 들어가야하며, 업데이트를 원하는 요소에 따라 각 수정값을 입력한다.
