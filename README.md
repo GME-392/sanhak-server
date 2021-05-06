@@ -9,6 +9,25 @@ https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/res
 header에 "myauth": "allow" 값을 넣어야 endpoint사용가능
 > 4월27일 이후 get부터 적용예정
 
+        Item: {
+            "user_id": userId,
+            "user_pw": userPw,
+            "boj_name": bojName,
+            "user_email": userEmail,
+            "user_level": 0,
+            "user_rank": -1,
+            "user_status": true,
+            "active_group_set": {},
+            "inactive_group_set": {},
+            "created_at": `${new Date()}`,
+            "user_message": "",
+            "organization": organization,
+            "solved_problems": [],
+            "homepage": "",
+            "email_accept": false,
+        }
+        
+        userDB 초기 항목
 
 **GET**
 
@@ -83,12 +102,16 @@ header에 "myauth": "allow" 값을 넣어야 endpoint사용가능
 
 * updateGroupRank(userId, groupId, rank, callback)
   * 유저의 그룹안 랭크 업데이트
-  * userid와 groupId반드시 
+  * userid와 groupid 반드시 필요 
 
 * updateSolved
   * solved_problems의 문제를 대체하는 함수
   * 입력받는 problems는 항상 내부의 데이터셋과 중복되지 않음이 보장되야한다.
   * userid, problems 반드시 필요
+
+* updateEmailAccept
+  * email_accept 항목 업데이트
+  * userid 반드시 필요
 
 * addGroup
   * 유저의 active group set에 그룹 추가
