@@ -33,7 +33,7 @@ exports.handler = function(event, context, callback) {
     var member_info = {};
     var id = event.id;
     for(var i=0; i<member_name.length; i++){
-        member_info[member_name[i]] = {"boj_id": boj_id[i], "score":0, "attendance":"absent"};
+         member_info[member_name[i]] = {"boj_id": boj_id[i], "score":0, "attendance":"absent", "attend_date":0};
     }
     Object.assign(rank_member, member_info);
     var params = {
