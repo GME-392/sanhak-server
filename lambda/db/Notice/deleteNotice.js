@@ -30,7 +30,7 @@ exports.handler = function(event, context, callback) {
     var params = {
         TableName: "noticeDB",
         Key: {
-            "name": event.name
+            "id": event.id
         }
     };
     
