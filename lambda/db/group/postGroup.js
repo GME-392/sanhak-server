@@ -31,6 +31,7 @@ exports.handler = function(event, context, callback) {
     var boj_id = event.boj_id;
     var rank_member = {};
     var member_info = {};
+    var id = event.id;
     for(var i=0; i<member_name.length; i++){
         member_info[member_name[i]] = {"boj_id": boj_id[i], "score":0, "attendance":"absent"};
     }
@@ -38,7 +39,7 @@ exports.handler = function(event, context, callback) {
     var params = {
         TableName: "groupDataBase",
         Item: {
-            "id": event.id,
+            "id": id,
             "leader": event.leader,
             "name": event.name,
             "member": member_name,
@@ -56,6 +57,9 @@ exports.handler = function(event, context, callback) {
             "group_point": null
         }
     };
+    
+    
+
     dynamo.put(params, function(err, data) {
         if (err) {
             console.log("Error", err);
@@ -68,5 +72,7 @@ exports.handler = function(event, context, callback) {
             callback(null, response);
         }
     });
+
+    return { GROUPID : id }
 }
 
