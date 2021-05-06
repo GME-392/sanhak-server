@@ -29,27 +29,57 @@ var failResponse = {
 
 exports.handler = function(event, context, callback) {
     var func = event.func;
+    var id = event.id;
     var infoName = event.infoName;
     var date = event.date;
     var link = event.link;
     
 
     switch (func) {
+        case 'updateInfoName':
+            updateInfoName(id, infoName, callback);
+            break;
+        
         case 'updateDate':
-            updateDate(infoName, date, callback);
+            updateDate(id, date, callback);
             break;
         
         case 'updateLink':
-            updateLink(infoName, link, callback);
+            updateLink(id, link, callback);
             break;
     }
 }
-
-function updateDate(infoName, date, callback){
+function updateInfoName(id, infoName, callback){
     var params = {
         TableName: 'noticeDB',
         Key: {
-            "infoName": infoName
+            "id": id
+        },
+        AttributeUpdates: {
+            "infoName": {
+                "Action": "PUT",
+                "Value": infoName
+            }
+
+        }
+    };
+    dynamo.update(params, function(err, data) {
+        if (err) {
+            console.log("Error", err);
+            failResponse.body = JSON.stringify({"message": `has error: ${err}`});
+            callback(null, failResponse);
+        } else {
+            console.log("Success", data);
+            response.body = JSON.stringify(data);
+            callback(null, response);
+        }
+    });
+}
+function updateDate(id, date, callback){
+    var params = {
+        TableName: 'noticeDB',
+        Key: {
+            "id": id
         },
         AttributeUpdates: {
             "date": {
@@ -71,11 +101,11 @@ function updateDate(infoName, date, callback){
         }
     });
 }
-function updateLink(infoName, link, callback){
+function updateLink(id, link, callback){
     var params = {
         TableName: 'noticeDB',
         Key: {
-            "infoName": infoName
+            "id": id
         },
         AttributeUpdates: {
             "link": {
