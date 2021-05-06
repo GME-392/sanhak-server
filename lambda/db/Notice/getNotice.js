@@ -28,12 +28,12 @@ var failResponse = {
 
 
 exports.handler = function(event, context, callback) {
-    var infoName = event.queryStringParameters.infoName;
+    var id = event.queryStringParameters.id;
     var func = event.queryStringParameters.func;
 
     switch (func) {
         case 'getNotice':
-            getNotice(infoName, callback);
+            getNotice(id, callback);
             break;
         
         case 'getAllNotice':
@@ -43,11 +43,12 @@ exports.handler = function(event, context, callback) {
     }
 };
 
-function getNotice(infoName, callback){
+function getNotice(id, callback){
     var params = {
         TableName: 'noticeDB',
         Key: {
-            "infoName": infoName            
+            "id": id
+            
         }
         
     };
