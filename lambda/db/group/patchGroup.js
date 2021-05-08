@@ -42,7 +42,6 @@ exports.handler = function(event, context, callback) {
     var group_noti = event.group_noti;
     var rank_member = {};
     var boj_id = event.boj_id;
-    var left_member = event.left_member;
 
     switch (func) {
         case 'updateProblems':
@@ -91,7 +90,7 @@ exports.handler = function(event, context, callback) {
             break;
         
         case 'deleteMember':
-            deleteMember(id, left_member, callback);
+            deleteMember(id, name, callback);
             break;
         
         case 'deleteRankMember':
@@ -117,7 +116,7 @@ function updateProblems(id, probs, callback){
             callback(null, failResponse);
         } 
         else {
-            console.log("Success", data);
+            console.log("Success");
             callback(null, response);
         }
     });
@@ -138,7 +137,7 @@ function updateCycle(id, cycle, callback){
             failResponse.body = JSON.stringify({"message": `has error: ${err}`});
             callback(null, failResponse);
         } else {
-            console.log("Success", data);
+            console.log("Success");
             callback(null, response);
         }
     });
@@ -160,7 +159,7 @@ function updateProblemNumber(id, prob_num, callback){
             failResponse.body = JSON.stringify({"message": `has error: ${err}`});
             callback(null, failResponse);
         } else {
-            console.log("Success", data);
+            console.log("Success");
             callback(null, response);
         }
     });
@@ -182,7 +181,7 @@ function updateGroupGoal(id, goal, callback){
             failResponse.body = JSON.stringify({"message": `has error: ${err}`});
             callback(null, failResponse);
         } else {
-            console.log("Success", data);
+            console.log("Success");
             callback(null, response);
         }
     });
@@ -204,7 +203,7 @@ function updateProblemLevel(id, prob_level, callback){
             failResponse.body = JSON.stringify({"message": `has error: ${err}`});
             callback(null, failResponse);
         } else {
-            console.log("Success", data);
+            console.log("Success");
             callback(null, response);
         }
     });
@@ -230,7 +229,7 @@ function updateGroupRank(id, rank_Group, callback){
             callback(null, failResponse);
         } 
         else {
-            console.log("Success", data);
+            console.log("Success");
             callback(null, response);
         }
     });
@@ -255,7 +254,7 @@ function updateGroupNotice(id, group_noti, callback){
             failResponse.body = JSON.stringify({"message": `has error: ${err}`});
             callback(null, failResponse);
         } else {
-            console.log("Success", data);
+            console.log("Success");
             callback(null, response);
         }
     });
@@ -277,7 +276,7 @@ function updateAttendance(id, name, attendance, callback){
             failResponse.body = JSON.stringify({"message": `has error: ${err}`});
             callback(null, failResponse);
         } else {
-            console.log("Success", data);
+            console.log("Success");
             callback(null, response);
         }
     });
@@ -300,7 +299,7 @@ function updatePersonalScore(id, name, score, callback){
             failResponse.body = JSON.stringify({"message": `has error: ${err}`});
             callback(null, failResponse);
         } else {
-            console.log("Success", data);
+            console.log("Success");
             callback(null, response);
         }
     });
@@ -324,7 +323,7 @@ function addMember(id, new_member, callback){
             failResponse.body = JSON.stringify({"message": `has error: ${err}`});
             callback(null, failResponse);
         } else {
-            console.log("Success", data);
+            console.log("Success");
             callback(null, response);
         }
     });
@@ -343,7 +342,7 @@ function addRankMember(id, rank_member, callback){
             failResponse.body = JSON.stringify({"message": `has error: ${err}`});
             callback(null, failResponse);
         } else {
-            console.log("Success", data);
+            console.log("Success");
             rank_db = data.Item.rank_member;
             Object.assign(rank_db,rank_member);
        
@@ -365,7 +364,7 @@ function addRankMember(id, rank_member, callback){
                     callback(null, failResponse);
                     
                 } else {
-                    console.log("Success", data);
+                    console.log("Success");
                     callback(null, response);
                     
                 }
@@ -378,7 +377,7 @@ function addRankMember(id, rank_member, callback){
     
     
 }
-function deleteMember(id, left_member, callback){
+function deleteMember(id, name, callback){
     var member_db = [];
     var params = {
         TableName: 'groupDataBase',
@@ -392,10 +391,10 @@ function deleteMember(id, left_member, callback){
             failResponse.body = JSON.stringify({"message": `has error: ${err}`});
             callback(null, failResponse);
         } else {
-            console.log("Success", data);
+            console.log("Success");
             response.body = JSON.stringify(data);
             member_db = data.Item.member;
-            member_db = member_db.filter(member_db => member_db != left_member);
+            member_db = member_db.filter(member_db => member_db != name);
        
             var params = {
                 TableName: 'groupDataBase',
@@ -419,7 +418,7 @@ function deleteMember(id, left_member, callback){
                     callback(null, failResponse);
                     
                 } else {
-                    console.log("Success", data);
+                    console.log("Success");
                     callback(null, response);
                     
                 }
@@ -447,7 +446,7 @@ function deleteRankMember(id, name, callback){
             failResponse.body = JSON.stringify({"message": `has error: ${err}`});
             callback(null, failResponse);
         } else {
-            console.log("Success", data);
+            console.log("Success");
             callback(null, response);
         }
     });
