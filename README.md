@@ -395,13 +395,13 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 * 응답 : 각 그룹의 4가지 정보(그룹 이름, 목표, 인원수, point)를 가지고 있는 객체 배열을 point 순으로 정렬해서 반환.  (프론트에서 요구시 쉽게 추가 가능)
 
 
-## groupDB 구조
+## noticeDB 구조
 
 **전체 DB**
 ![image](https://user-images.githubusercontent.com/64597426/117318695-a0882780-aec5-11eb-8e9f-4c451890a95b.png)
 
 
-## groupDB REST API 사용법
+## noticeDB REST API 사용법
 
 **endpoint**
 
@@ -431,3 +431,17 @@ https://tdwcyrlp8g.execute-api.ap-northeast-2.amazonaws.com/noticeDB
 **patch**
 
 * func, id의 값이 무조건 들어가야하며, 업데이트를 원하는 요소에 따라 각 수정값을 입력한다.
+
+
+
+## infoDB 구조
+
+**전체 DB**
+![image](https://user-images.githubusercontent.com/64597426/117527320-0f6c9a00-b006-11eb-8464-12b3ba86fb8a.png)
+
+
+## infoDB REST API 사용법
+
+**endpoint**
+
+https://qojk0ukeu2.execute-api.ap-northeast-2.amazonaws.com/infoDB
