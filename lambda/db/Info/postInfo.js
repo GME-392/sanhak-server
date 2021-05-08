@@ -47,7 +47,6 @@ exports.handler = function(event, context, callback) {
             
         } else {
             console.log("Success", data);
-            response.body = JSON.stringify({"message": "succeed"});
             callback(null, response);
         }
     });
