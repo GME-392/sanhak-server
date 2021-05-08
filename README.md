@@ -273,7 +273,7 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
   * func와 id를 입력하고, 추가를 원하는 멤버의 이름과 정보들을 맵 형식으로 입력한다
 
 
-* deleteMember
+* ★★★★deleteMember★★★★
   * 탈퇴 그룹원을 그룹 명단에서 삭제 하는 함수
   * func와 id를 입력하고, 삭제를 원하는 멤버의 이름을 문자열 형식으로 입력한다
   * ex) 
