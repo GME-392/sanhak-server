@@ -271,6 +271,13 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 * addRankMember
   * 새 그룹원의 랭크 판별을 위한 정보를 업데이트 하는 함수
   * func와 id를 입력하고, 추가를 원하는 멤버의 이름과 정보들을 맵 형식으로 입력한다
+
+
+* deleteMember
+  * 탈퇴 그룹원을 그룹 명단에서 삭제 하는 함수
+  * func와 id를 입력하고, 삭제를 원하는 멤버의 이름을 문자열 형식으로 입력한다
+  * ex) 
+ ![image](https://user-images.githubusercontent.com/64597426/117527841-d6362900-b009-11eb-9441-84eea64a2936.png)
   
 
 * deleteRankMember
