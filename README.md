@@ -277,7 +277,7 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
   * 탈퇴 그룹원을 그룹 명단에서 삭제 하는 함수
   * func와 id를 입력하고, 삭제를 원하는 멤버의 이름을 문자열 형식으로 입력한다
   * ex) 
- ![image](https://user-images.githubusercontent.com/64597426/117527841-d6362900-b009-11eb-9441-84eea64a2936.png)
+ ![image](https://user-images.githubusercontent.com/64597426/117528056-3bd6e500-b00b-11eb-8c5b-6bc6de48e27b.png)
   
 
 * deleteRankMember
