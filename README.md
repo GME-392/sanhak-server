@@ -404,7 +404,7 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 
 **8. 그룹 간 랭킹 산출 API**
 
-* endpoint : https://rg4a7gp98g.execute-api.us-east-2.amazonaws.com/backend_api/getgrouprank
+* endpoint : https://rg4a7gp98g.execute-api.us-east-2.amazonaws.com/backend_api/returngrouprank
 * 메소드 : GET
 * 응답 : 각 그룹의 4가지 정보(그룹 이름, 목표, 인원수, point)를 가지고 있는 객체 배열을 point 순으로 정렬해서 반환.  (프론트에서 요구시 쉽게 추가 가능)
 
