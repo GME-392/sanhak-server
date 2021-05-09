@@ -408,6 +408,11 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 * 메소드 : GET
 * 응답 : 각 그룹의 4가지 정보(그룹 이름, 목표, 인원수, point)를 가지고 있는 객체 배열을 point 순으로 정렬해서 반환.  (프론트에서 요구시 쉽게 추가 가능)
 
+**9. 매일 12시 정각마다 부르는 API들 Scheduling**
+![image](https://user-images.githubusercontent.com/65909160/117567368-090a1b00-b0f7-11eb-9463-ae9ff3be5f50.png)
+![스케듈려](https://user-images.githubusercontent.com/65909160/117567372-11faec80-b0f7-11eb-99a4-73cfb7ea1848.PNG)
+
+
 
 ## noticeDB 구조
 
