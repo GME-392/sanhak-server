@@ -207,6 +207,13 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
  ![image](https://user-images.githubusercontent.com/64597426/115739626-0b673800-a3c9-11eb-92f1-95d159cfeef8.png)
 
 
+* updateAttendDate
+  * 출석일자를 업데이트 하는 함수
+  * func와 id를 입력하고, 변경을 원하는 그룹원의 이름과 출석일자를 각각 문자열과 숫자 형식으로 입력한다
+  * ex) 
+ ![image](https://user-images.githubusercontent.com/64597426/115739626-0b673800-a3c9-11eb-92f1-95d159cfeef8.png)
+
+
 * updateAttendanceProblems
   * 출석확인 문제를 업데이트 하는 함수
   * func와 id를 입력하고, 변경을 원하는 출석문제를 배열 형식으로 입력한다
