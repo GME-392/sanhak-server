@@ -221,7 +221,7 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
  ![image](https://user-images.githubusercontent.com/64597426/116369603-8656a580-a844-11eb-8b7e-7ba6f27f7a35.png)
 
 
-* updateGroupGoal
+* updateGroupType
   * 그룹 생성의 목적을 변경하는 함수
   * func와 id를 입력하고, 변경을 원하는 목표를 문자열 형식으로 입력한다
   * ex)  
