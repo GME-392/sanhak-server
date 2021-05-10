@@ -225,7 +225,7 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
   * 그룹 생성의 목적을 변경하는 함수
   * func와 id를 입력하고, 변경을 원하는 목표를 문자열 형식으로 입력한다
   * ex)  
- ![image](https://user-images.githubusercontent.com/64597426/115740044-69941b00-a3c9-11eb-938d-b981f6c47beb.png)
+ ![image](https://user-images.githubusercontent.com/64597426/117657479-8f485f00-b1d4-11eb-9ce9-cdbb650b1085.png)
 
 
 * updateGroupNotice
