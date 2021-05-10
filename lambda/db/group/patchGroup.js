@@ -37,7 +37,7 @@ exports.handler = function(event, context, callback) {
     var name = event.name;
     var score = event.score;
     var prob_num = event.prob_num;
-    var goal = event.goal;
+    var group_type = event.group_type;
     var prob_level = event.prob_level;
     var group_noti = event.group_noti;
     var rank_member = {};
@@ -58,8 +58,8 @@ exports.handler = function(event, context, callback) {
             updateCycle(id, cycle, callback);
             break;
         
-        case 'updateGroupGoal':
-            updateGroupGoal(id, goal, callback);
+        case 'updateGroupType':
+            updateGroupType(id, group_type, callback);
             break;
         
         case 'updateProblemNumber':
@@ -199,15 +199,18 @@ function updateProblemNumber(id, prob_num, callback){
     });
 }
 
-function updateGroupGoal(id, goal, callback){
+function updateGroupType(id, group_type, callback){
     var params = {
         TableName: 'groupDataBase',
         Key: {
             "id": id
         },
-        UpdateExpression: "SET group_goal.goal = :goal",
-        ExpressionAttributeValues: {":goal": goal}
-
+        AttributeUpdates: {
+            "group_type": {
+                "Action": "PUT",
+                "Value": group_type
+            }
+        }
     };
     dynamo.update(params, function(err, data) {
         if (err) {
