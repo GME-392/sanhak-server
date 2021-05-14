@@ -25,6 +25,7 @@ header에 "myauth": "allow" 값을 넣어야 endpoint사용가능
             "solved_problems": [],
             "homepage": "",
             "email_accept": false,
+            "direct_messages": [],
         }
         
         userDB 초기 항목
@@ -46,6 +47,8 @@ header에 "myauth": "allow" 값을 넣어야 endpoint사용가능
 
 * getSolved
   * userid의 solved_problems를 반환한다.
+
+* getDirectMessageFrom, getDirectMessageTo 구현 예정
 
 
 **POST**
@@ -121,6 +124,15 @@ header에 "myauth": "allow" 값을 넣어야 endpoint사용가능
 * addGroupProblems
   * groupid에 해당하는 그룹에 문제 추가 (default: (solved: false))
   * userid, groupid, problems 반드시 필요
+
+* createDirectMessage
+  * msgid에 해당하는 메시지 저장
+  * userid, msgid, msgfrom, msgto, msgcontent 필요
+  * 우선적으로는 userid에만 저장하게 함.(보내는 곳과 받는곳 모두에서 저장하게 하지는 않음)
+
+* deleteDirectMessage
+  * msgid에 해당하는 메시지 삭제
+  * userid, msgid 반드시 필요
 
 * deleteGroup
   * 그룹을 활성 그룹 목록에서 제거, 비활성 그룹 목록에 삽입
