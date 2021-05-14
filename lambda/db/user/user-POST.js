@@ -49,6 +49,7 @@ exports.handler = (event, context, callback) => {
             "solved_problems": [],
             "homepage": "",
             "email_accept": false,
+            "direct_messages": [],
         }
     };
     

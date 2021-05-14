@@ -115,6 +115,7 @@ function getUser(userId, callback) {
                 "organization": `${data.Item.organization}`,
                 "solved_problems": `${data.Item.solved_problems}`,
                 "homepage": `${data.Item.homepage}`,
+                "direct_messages": `${data.Item.direct_messages}`,
             };
             response.body = JSON.stringify(responseBody);
             callback(null, response);

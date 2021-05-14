@@ -33,8 +33,8 @@ let failResponse = {
 };
 
 exports.handler = (event, context, callback) => {
-    let userId = event.userid ? event.userid : "default";
-    let funcName = event.funcname ? event.funcname : "default";
+    let userId = event.userid ? event.userid : "";
+    let funcName = event.funcname ? event.funcname : "";
     let problems = event.problems ? event.problems : [];
     let grouprank = event.grouprank ? event.grouprank : -1;
     let groupName = event.groupname ? event.groupname : "defualt";
@@ -42,11 +42,15 @@ exports.handler = (event, context, callback) => {
     let message = event.message ? event.message : "default";
     let organization = event.organization ? event.organization : "";
     let homepage = event.homepage ? event.homepage : "";
-    let isMaster = event.ismaster ? event.ismaster : false;
-    let emailAccept = event.emailaccept ? event.emailAccept : false;
+    let isMaster = event.ismaster ? event.ismaster : true;
+    let emailAccept = event.emailaccept ? event.emailaccept : false;
+    let msgId = event.msgid ? event.msgid : "";
+    let msgTo = event.msgto ? event.msgto : "";
+    let msgFrom = event.msgfrom ? event.msgfrom : "";
+    let msgContent = event.msgcontent ? event.msgcontent : "";
      
-    if (userId == "default" || userId == "" || funcName == "default" || funcName == "") {
-        failResponse.body = JSON.stringify({"message":"missing content"});
+    if (userId == "" || funcName == "") {
+        failResponse.body = JSON.stringify({"message":"missing content", "userid":`${userId}`, "funcname": `${funcName}`});
         callback(null, failResponse);
         return;
     }
@@ -75,7 +79,7 @@ exports.handler = (event, context, callback) => {
         case 'updateSolved':
             updateSolved(userId, problems, callback);
             break;
-
+            
         case 'updateEmailAccept':
             updateEmailAccept(userId, emailAccept, callback);
             break;
@@ -86,6 +90,14 @@ exports.handler = (event, context, callback) => {
             
         case 'addGroupProblems':
             addGroupProblems(userId, groupId, problems, callback);
+            break;
+            
+        case 'createDirectMessage':
+            createDirectMessage(userId, msgId, msgFrom, msgTo, msgContent, callback);
+            break;
+            
+        case 'deleteDirectMessage':
+            deleteDirectMessage(userId, msgId, callback);
             break;
             
         case 'deleteGroup':
@@ -117,6 +129,7 @@ function updateProblems(userId, callback) {
     let myData = {};
     //update에 파라미터를 줘서 하려고 했지만 실패했기 때문에
     //임시 방편으로 구현한 것. 차후에 수정해야함.
+    //get에서 그룹 명을 받아오고 그
     dynamo.get(params, function(err, data) {
         if (err) {
             console.log("getUser Error", err);
@@ -288,8 +301,8 @@ function updateGroupRank(userId, groupId, rank, callback) {
     });
 }
 
+
 //문제를 추가해준다.
-//크롤러에서 항상 기존에 푼 문제에 포함되지 않는 문제를 넣어주는 것이 보장된다.
 function updateSolved(userId, problems, callback) {
     const params = {
         TableName: 'ACTIVE_USER',
@@ -421,6 +434,107 @@ function addGroupProblems(userId, groupId, problems, callback) {
         } else {
             console.log("addGroupProblems Success", data);
             response.body = JSON.stringify({"message": "group_problem is added"});
+            callback(null, response);
+        }
+    });
+}
+
+//direct message를 만들고 보냄
+function createDirectMessage(userId, msgId, msgFrom, msgTo, msgContent, callback) {
+    if (msgId == "" || msgFrom == "" || msgTo == "") {
+        failResponse.body = JSON.stringify({"message": "createDirectMessage is failed"});
+        callback(null, failResponse);
+    }
+    
+    let msgFormat = {
+        "id": msgId,
+        "from": msgFrom,
+        "to": msgTo,
+        "content": msgContent,
+    };
+    
+    const params = {
+        TableName: 'ACTIVE_USER',
+        Key: {
+            user_id: userId
+        },
+        AttributeUpdates: {
+            "direct_messages": {
+                Action: "ADD",
+                Value: [msgFormat]
+            }
+        }
+    };
+    
+    dynamo.update(params, function(err, data) {
+        if (err) {
+            console.log("createDirectMessage Error", err);
+            failResponse.body = JSON.stringify({"message": `createDirectMessage has an error: ${err}`});
+            callback(null, failResponse);
+            
+        } else {
+            console.log("createDirectMessage Success", data);
+            response.body = JSON.stringify({"message": "createDirectMessage is successful"});
+            callback(null, response);
+        }
+    });
+}
+
+//msgid에 해당하는 값 삭제
+function deleteDirectMessage(userId, msgId, callback) {
+    if (msgId == "") {
+        failResponse.body = JSON.stringify({"message": "deleteDirectMessage is failed"});
+        callback(null, failResponse);
+    }
+    const params1 = {
+        TableName: 'ACTIVE_USER',
+        Key: {
+            user_id: userId
+        }
+    };
+    dynamo.get(params1, function(err, data) {
+        if (err) {
+            console.log("getUser Error", err);
+            failResponse.body = JSON.stringify({"message": `getUser has an error: ${err}`});
+            callback(null, failResponse);
+            
+        } else {
+            console.log("getUser Success", data);
+            
+            let updateExpression = "";
+            let messages = data.Item.direct_messages;
+            for (const index in messages) {
+                if (messages[index]["id"] == msgId) {
+                    updateExpression = `remove direct_messages[${index}]`;
+                    break;
+                }
+            }
+            if (updateExpression == "") {
+                failResponse.body = JSON.stringify({"message": "object of msgid doesn't exist"});
+                callback(null, failResponse);
+            }
+            
+            const params2 = {
+                TableName: 'ACTIVE_USER',
+                Key: {
+                    user_id: userId,
+                },
+                UpdateExpression: updateExpression,
+            };
+            
+            dynamo.update(params2, function(err, data) {
+                if (err) {
+                    console.log("deleteDirectMessage Error", err);
+                    failResponse.body = JSON.stringify({"message": `deleteDirectMessage has error: ${err}`});
+                    callback(null, failResponse);
+                    
+                } else {
+                    console.log("deleteDirectMessage Success", data);
+                    response.body = JSON.stringify({"message": "DirectMessage is deleted"});
+                    callback(null, response);
+                }
+            });
+            
             callback(null, response);
         }
     });
