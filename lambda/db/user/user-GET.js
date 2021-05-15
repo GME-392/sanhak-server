@@ -1,13 +1,3 @@
-//필요기능들
-//user id체크하여 있는지 없는지 반환 
-//로그인 할 때 password값이 유효한지 체크.
-//특정 user id에서 비밀번호를 제외한 값 가져오기
-//header에 사용할 함수와 id를 받자.
-//암호화 프로토콜이 필요해보인다: 프론트에서 처리가능이라고 함
-//해당 유저의 문제만 끌어오는 함수도 필요
-//모든 유저데이터를 보내는 함수도 필요
-//차후에는 헤더에 x-api-key 속성에 키값을 넣어야 작동하게 할것.
-
 let AWS = require('aws-sdk');
 
 AWS.config.update({
@@ -62,7 +52,11 @@ exports.handler = (event, context, callback) => {
             
         case 'getGroupById':
             getGroupById(userId, groupId, callback);
-            break; 
+            break;
+            
+        case 'getDirectMessages':
+            getDirectMessages(userId, callback);
+            break;
             
         default:
             console.log("default_function");
@@ -201,8 +195,8 @@ function getGroupById(userId, groupId, callback) {
             user_id: userId,
         },
         TableName: 'ACTIVE_USER',
-        ProjectionExpression: "active_group_set.#g",
-        ExpressionAttributeNames: {"#g": groupId},
+        ProjectionExpression: "active_group_set.#gid, user_id",
+        ExpressionAttributeNames: {"#gid": groupId},
     };
     dynamo.scan(params, function(err, data) {
         if (err) {
@@ -212,7 +206,47 @@ function getGroupById(userId, groupId, callback) {
             
         } else {
             console.log("getGroupById Success", data);
-            response.body = JSON.stringify(data.Item.solved_problems);
+            response.body = JSON.stringify(data);
+            callback(null, response);
+        }
+    });
+}
+
+//projectionExpression으로는 user_id가 다른 여러 데이터에서 원하는 요소만 쏙 뽑아올 수 있다.
+//예를 들어 특정 그룹에 속한 유저의 그룹데이터를 가져오면 그 그룹에 가입하지 않으면 빈데이터, 가입했으면 데이터가 있다.
+
+//direct messages값 반환
+function getDirectMessages(userId, callback) {
+    console.log("getDirectMessages in function");
+    let params = {
+        Key: {
+            user_id: userId,
+        },
+        TableName: 'ACTIVE_USER',
+    };
+    dynamo.get(params, function(err, data) {
+        if (err) {
+            console.log("getDirectMessages Error", err);
+            failResponse.body = JSON.stringify({"message": `getting direct_messages: ${userId} is failed`});
+            callback(null, failResponse);
+        } else {
+            console.log("getDirectMessages Success", data);
+            let messages = data.Item.direct_messages;
+            let send  = [];
+            let receive = [];
+            for(let item of messages) {
+                if (item["from"] == userId) {
+                    send.push(item);
+                } else {
+                    receive.push(item);
+                }
+            }
+            
+            let responseBody = {
+                "sended_messages": send,
+                "received_messages": receive,
+            };
+            response.body = JSON.stringify(responseBody);
             callback(null, response);
         }
     });
