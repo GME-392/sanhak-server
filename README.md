@@ -48,7 +48,9 @@ header에 "myauth": "allow" 값을 넣어야 endpoint사용가능
 * getSolved
   * userid의 solved_problems를 반환한다.
 
-* getDirectMessageFrom, getDirectMessageTo 구현 예정
+* getDirectMessages
+  * userid의 direct_messages를 반환한다.
+  * body에 sended_messages와 received_messages로 나눠서 반환한다.
 
 
 **POST**
