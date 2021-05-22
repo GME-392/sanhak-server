@@ -48,6 +48,7 @@ exports.handler = (event, context, callback) => {
     let msgTo = event.msgto ? event.msgto : "";
     let msgFrom = event.msgfrom ? event.msgfrom : "";
     let msgContent = event.msgcontent ? event.msgcontent : "";
+    let msgCreatedAt = event.msgcreatedat ? event.msgcreatedat : 0;
      
     if (userId == "" || funcName == "") {
         failResponse.body = JSON.stringify({"message":"missing content", "userid":`${userId}`, "funcname": `${funcName}`});
@@ -93,7 +94,7 @@ exports.handler = (event, context, callback) => {
             break;
             
         case 'createDirectMessage':
-            createDirectMessage(userId, msgId, msgFrom, msgTo, msgContent, callback);
+            createDirectMessage(userId, msgId, msgFrom, msgTo, msgContent, msgCreatedAt, callback);
             break;
             
         case 'deleteDirectMessage':
@@ -440,7 +441,7 @@ function addGroupProblems(userId, groupId, problems, callback) {
 }
 
 //direct message를 만들고 보냄
-function createDirectMessage(userId, msgId, msgFrom, msgTo, msgContent, callback) {
+function createDirectMessage(userId, msgId, msgFrom, msgTo, msgContent, msgCreatedAt, callback) {
     if (msgId == "" || msgFrom == "" || msgTo == "") {
         failResponse.body = JSON.stringify({"message": "createDirectMessage is failed"});
         callback(null, failResponse);
@@ -451,6 +452,7 @@ function createDirectMessage(userId, msgId, msgFrom, msgTo, msgContent, callback
         "from": msgFrom,
         "to": msgTo,
         "content": msgContent,
+        "created_at": msgCreatedAt,
     };
     
     const params = {
