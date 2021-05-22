@@ -129,7 +129,7 @@ header에 "myauth": "allow" 값을 넣어야 endpoint사용가능
 
 * createDirectMessage
   * msgid에 해당하는 메시지 저장
-  * userid, msgid, msgfrom, msgto, msgcontent 필요
+  * userid, msgid, msgfrom, msgto, msgcontent, msgcreatedat 필요
   * 우선적으로는 userid에만 저장하게 함.(보내는 곳과 받는곳 모두에서 저장하게 하지는 않음)
 
 * deleteDirectMessage
