@@ -1,7 +1,3 @@
-// 2021.5.13 현재 AWS Sendbox 환경을 탈출하여 미인증된 메일로 메일 보내는 것 성공. User DB에 접근하여 정보 가지고 와서 메일 보내는 테스트 코드임. 
-
-
-
 // Load the AWS SDK for Node.js
 let aws = require('aws-sdk');
 // Set the region 
@@ -13,40 +9,60 @@ exports.handler = async function (event) {
   
   // 사용 변수들
   let USER_ENDPOINT = `https://9u31ip8rz2.execute-api.ap-northeast-2.amazonaws.com/deployment-stage/rest-resource`;
-  let user_data;
+  let email;
   
-  // 메일의 형태
-  let params = {
-    Destination: {
-      ToAddresses: ['kimtaehyun981107@gmail.com'],
-    },
-    Message: {
-      Body: {
-        Text: { Data: '' },
-      },
-
-      Subject: { Data: "산학프로젝트 분석 보고서 메일링 서비스 테스트" },
-    },
-    Source: 'kimtaehyun98@naver.com',
-  };
-  
-  // 분석 내용
-  // 먼저 user에 대한 정보를 가져와야함
   const GetUser = async() => {
     return await axios
       .get(`${USER_ENDPOINT}?userid=${event.id}&funcname=getUser`)
       .then((res) => {
-        user_data = res.data;
+        email = res.data.user_email;
+        params.Destination.ToAddresses.push(email);
       });
   };
   
-  await GetUser();
-  let str = `
-  분석 내용은 여기에 들어가면 될듯. 아래는 예시임 (실제 DB의 내용임)
-  해당 유저가 가입해 있는 그룹의 수 : ${user_data['active_group_set'].length}
-  `;
+  // 메일의 형태
+  let params = {
+    Destination: {
+      ToAddresses: [],
+    },
+    Message: {
+      Body: {
+        Text: { 
+          Data: ``,
+          Charset : "UTF-8" },
+        Html : { 
+          Data : ``,
+          Charset : "UTF-8" },
+      },
+
+      Subject: { Data: "산학프로젝트 분석 보고서 메일링 서비스 테스트" }, 
+    },
+    Source: 'kimtaehyun98@naver.com',
+  };
   
-  params.Message.Body.Text.Data = str;
+  let str =  `<!DOCTYPE html>
+              <html lang="en">
+              <head>
+              <meta charset="UTF-8">
+              <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+              <meta http-equiv="X-UA-Compatible" content="IE=edge">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>태현</title>
+              </head>
+              
+              <body>
+              <h1>그룹별 주간 분석보고서</h1>
+              <p>그룹 이름 : "${event.name}"</p>
+              <p>그룹 공지사항 : ${event.noti}</p>
+              <p>해당 유저의 그룹 내 누적 출석 일수 : ${event.date}일</p>
+              <p>해당 유저가 출석 문제중 해결하지 못한 문제들 : ${event.prob}</p>
+              <p>해당 유저의 그룹 내 랭킹 : ${event.rank}등</p>
+              </body>
+              </html>`; 
+  
+  await GetUser();
+  
+  params.Message.Body.Html.Data = str;
   
   return ses.sendEmail(params).promise();
 };
