@@ -426,7 +426,10 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 ![image](https://user-images.githubusercontent.com/65909160/117567368-090a1b00-b0f7-11eb-9463-ae9ff3be5f50.png)
 ![스케듈려](https://user-images.githubusercontent.com/65909160/117567372-11faec80-b0f7-11eb-99a4-73cfb7ea1848.PNG)
 
-
+**10. 메일 보내는 API**
+* endpoint : https://4bm4z56bgg.execute-api.us-east-2.amazonaws.com/backend_api/mailing
+* 메소드 : POST
+* 본문 : name(그룹 이름), noti(그룹 공지), date(누적 출석 일수), prob(출석 문제중 유저가 해결하지 못한 문제), rank(그룹 내 등수)
 
 ## noticeDB 구조
 
