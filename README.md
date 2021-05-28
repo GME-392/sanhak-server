@@ -429,7 +429,17 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 **10. 메일 보내는 API**
 * endpoint : https://4bm4z56bgg.execute-api.us-east-2.amazonaws.com/backend_api/mailing
 * 메소드 : POST
-* 본문 : name(그룹 이름), noti(그룹 공지), date(누적 출석 일수), prob(출석 문제중 유저가 해결하지 못한 문제), rank(그룹 내 등수)
+* 본문 : name(그룹 이름), noti(그룹 공지), date(누적 출석 일수), prob(출석 문제중 유저가 해결하지 못한 문제), rank(그룹 내 등수), flag("1"로 보내야 됨!!!)
+
+**11. 주간마다 scheduling 하여 주간 분석보고서 보내주는 최종적 API**
+* endpoint : https://wcc31rf271.execute-api.us-east-2.amazonaws.com/backend_api/report
+* 메소드 : GET
+* 본문 : 없음
+
+**12. 그룹 문제집 비었을 때 메일링 API**
+* endpoint : https://xjtm6nhuwb.execute-api.us-east-2.amazonaws.com/backend_api/problemsetmailing
+* 메소드 : GET
+* 본문 : name(그룹 이름), leader(그룹 리더), flag("2"로 보내야됨!! 기본 mailing과 차별화)
 
 ## noticeDB 구조
 
