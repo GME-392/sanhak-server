@@ -441,6 +441,12 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 * 메소드 : GET
 * 본문 : name(그룹 이름), leader(그룹 리더), flag("2"로 보내야됨!! 기본 mailing과 차별화)
 
+**13. 그룹장이 그룹원 강퇴할 수 있는 API**
+* endpoint : https://ydtsc6in8g.execute-api.us-east-2.amazonaws.com/backend_api/deletegroupmember
+* 메소드 : GET
+* 본문 : name(그룹 이름), groupID(그룹 아이디), members(문자열 배열 형식)
+![image](https://user-images.githubusercontent.com/65909160/120653226-77a28480-c4bb-11eb-8e68-f25e851fced7.png)
+
 ## noticeDB 구조
 
 **전체 DB**
