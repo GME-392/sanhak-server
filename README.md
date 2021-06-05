@@ -449,7 +449,7 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 
 **14. 그룹 해체 API**
 * endpoint : https://j49lfuutjb.execute-api.us-east-2.amazonaws.com/backend_api/deletegroup
-* 메소드 : GET
+* 메소드 : delete
 * 본문 : name(그룹 이름), groupID(그룹 아이디), members(문자열 배열 형식)
 
 ## noticeDB 구조
