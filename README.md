@@ -447,6 +447,11 @@ https://bb80o1csdl.execute-api.ap-northeast-2.amazonaws.com/groupDB
 * 본문 : name(그룹 이름), groupID(그룹 아이디), members(문자열 배열 형식)
 ![image](https://user-images.githubusercontent.com/65909160/120653226-77a28480-c4bb-11eb-8e68-f25e851fced7.png)
 
+**14. 그룹 해체 API**
+* endpoint : https://j49lfuutjb.execute-api.us-east-2.amazonaws.com/backend_api/deletegroup
+* 메소드 : GET
+* 본문 : name(그룹 이름), groupID(그룹 아이디), members(문자열 배열 형식)
+
 ## noticeDB 구조
 
 **전체 DB**
